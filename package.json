@@ -1,0 +1,38 @@
+{
+  "name": "RandomChat",
+  "version": "1.0.0",
+  "description": "Live Random Chat",
+  "main": "server.js",
+  "repository": "https://github.com/TopDev10/MERN-Live-Random-Chat.git",
+  "author": "TopDev10",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/node": "^7.7.4",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/preset-react": "^7.7.4",
+    "@babel/register": "^7.7.4",
+    "body-parser": "^1.19.0",
+    "chalk": "^3.0.0",
+    "concurrently": "^5.0.1",
+    "connect-flash": "^0.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "express-validator": "^6.3.0",
+    "http": "^0.0.0",
+    "mongodb": "^3.4.0",
+    "mongoose": "^5.8.1",
+    "nodemon": "^2.0.2",
+    "passport": "^0.4.1",
+    "path": "^0.12.7",
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-hot-middleware": "^2.25.0",
+    "winston": "^3.2.1"
+  }
+}

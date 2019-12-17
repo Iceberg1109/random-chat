@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pure Real-Time Random Chat Online</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                Feel Free to Chat with others here...
+                <button id="find_pair">Find Pair</button>
+            </div>
+            <div class="main">
+                <input type="text" placeholder="Username" id="username" >
+                <button id="confirm_username">Confirm</button>
+                <input type="text" placeholder="message" id="message" >
+                <button id="send_message">Send</button>
+
+                <div id="chatting_history">
+                    
+                </div>
+            </div>
+        </div>
+        <!-- Browsing JS Libraries -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <!-- End of Browsing JS Libraries-->
+
+        <!-- Customized Script -->
+        <script>
+            $(function() {
+                let socket = io.connect('http://localhost:8001', {
+                    query : {
+                        user_type:"guest"
+                    }
+                })
+
+                var username = $('#username');
+                var confirmBtn = $('#confirm_username');
+                var message = $('#message');
+                var send = $('#send_message');
+                var find_pair = $("#find_pair");
+
+                var chatting_history = $("#chatting_history");
+
+                // Confirm Username
+                $(document).on('click', '#confirm_username', function(){
+                    console.log(username.val());
+                    socket.emit('ON_CONFIRM_NAME', { username: username.val() });
+                })
+
+                // Find Chatting Pair
+                $(document).on('click', '#find_pair', function(){
+                    socket.emit('ON_FIND_PAIR', { username: username.val() });
+                })
+
+                // Send a Message to Pair
+                $(document).on('click', '#send_message', function(){
+                    socket.emit('ON_NEW_MESSAGE', { 
+                        msg: message.val(),         // Text Message Content
+                        img: null,                  // Message Image URL
+                        vid: null                   // Message Video URL
+                    });
+                    var n_content = "<div class='snd_msg'>" + "You: " + message.val() + "</div>";
+                    chatting_history.append(n_content);
+                })
+
+                /**
+                 * Socket Receiving Message WorkFlow
+                 * **/
+
+                 // On Paired
+                 socket.on("ON_PAIRED", (data) => {
+                     console.log("ON_PAIRED", data);
+                 });
+
+                 // On Pair Failed
+                 socket.on("ON_PAIRFAILED", (data) => {
+                     console.log("ON_PAIRFAILED", data);
+                 });
+
+                 // On Receive New Message
+                 socket.on("NEW_MESSAGE", (data) => {
+                    console.log("ON NEW MESSAGE", data);
+                    var n_content = "<div class='rcv_msg'>" + data.sender + ": " + data.msg + "</div>";
+                    chatting_history.append(n_content);
+                 });
+            });
+        </script>
+        <!-- End Script -->
+    </body>
+</html>

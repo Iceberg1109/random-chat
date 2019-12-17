@@ -1,5 +1,5 @@
 {
-  "name": "random_chat",
+  "name": "randomchat",
   "version": "1.0.0",
   "description": "Live Random Chat",
   "main": "server.js",
@@ -7,7 +7,9 @@
   "author": "TopDev10",
   "license": "MIT",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "MODE=development node server.js",
+    "prod": "MODE=production node server.js"
   },
   "dependencies": {
     "@babel/cli": "^7.7.5",
@@ -31,6 +33,7 @@
     "nodemon": "^2.0.2",
     "passport": "^0.4.1",
     "path": "^0.12.7",
+    "socket.io": "^2.3.0",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
     "winston": "^3.2.1"

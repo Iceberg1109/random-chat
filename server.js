@@ -6,12 +6,15 @@ let express = require('express'),
 const socketserver = require('./socket');
 dotenv.config();
 
-app.get('/', function(req, res) {
-    // res.send("This is Random Chat Back-End");
-    res.sendFile(__dirname + '/app/view/index.html');
+app.use(express.static(__dirname + '/app/view/'));
+var path = __dirname + '/app/view/';
+  
+app.get("/",function(req,res){
+    res.sendFile(path + "index.html");
 });
 
-exports.server = http.listen(
-    (process.env.MODE == "development")?process.env.DEV_PORT:process.env.PROD_PORT
+exports.server = http.listen(8000, function(){
+        console.log("Live at Port 8000");
+    }
 )
 SocketServer(http)

@@ -1,0 +1,17 @@
+#login {
+  margin-top: 130px;
+  box-shadow: 2px 2px 5px #bbb;
+}
+
+#login h2 {
+  background: #ccc;
+  padding: 8px 0px;
+}
+
+#login .panel {
+  padding: 20px 50px 30px;
+}
+
+a.btn-primary {
+  width: 40%;
+}

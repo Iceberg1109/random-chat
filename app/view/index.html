@@ -1,91 +1,174 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Pure Real-Time Random Chat Online</title>
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                Feel Free to Chat with others here...
-                <button id="find_pair">Find Pair</button>
-            </div>
-            <div class="main">
-                <input type="text" placeholder="Username" id="username" >
-                <button id="confirm_username">Confirm</button>
-                <input type="text" placeholder="message" id="message" >
-                <button id="send_message">Send</button>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Material Design for Bootstrap</title>
+  <!-- MDB icon -->
+  <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Slider Style -->
+  <link rel="stylesheet" href="css/slider.css">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-                <div id="chatting_history">
-                    
+<!-- Start your project here-->  
+
+  <!--Section: Contact v.2-->
+  <section class="col-sm-12 col-md-4 mx-auto p-0" id="login">
+
+    <!--Section heading-->
+    <h2 class="h1-responsive font-weight-bold text-center">Join us</h2>
+    
+    <div class="row panel">
+
+        <!--Grid column-->
+      <div class="col-md-12 mb-md-0 mb-5">
+        <form id="contact-form" name="contact-form" action="mail.php" method="POST">
+
+          <!--Grid row-->
+          <div class="row">
+
+              <!--Grid column-->
+              <div class="col-md-6">
+                  <div class="md-form mb-0">
+                      <input type="text" id="name" name="name" class="form-control">
+                      <label for="name" class="">Your name</label>
+                  </div>
+              </div>
+              <!--Grid column-->
+
+              <!--Grid column-->
+              <div class="col-md-6">
+                  <div class="md-form mb-0">
+                      <input type="number" id="age" name="age" class="form-control">
+                      <label for="age" class="">Your Age</label>
+                  </div>
+              </div>
+              <!--Grid column-->
+
+          </div>
+          <!--Grid row-->
+          <div class="row">
+
+            <!--Grid column-->
+            <div class="col-md-6">
+                <div class="md-form mb-0">
+                    <input type="text" id="country" name="country" class="form-control">
+                    <label for="country" class="">Your country</label>
                 </div>
             </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-md-6">
+                <div class="md-form mb-0">
+                    <input type="text" id="state" name="state" class="form-control">
+                    <label for="state" class="">Your state</label>
+                </div>
+            </div>
+            <!--Grid column-->
+
+          </div>
+          <!--Grid row-->
+          <!--Grid row-->
+          <div class="row mt-5">
+              <div class="col-md-6 d-flex">
+                <div class="d-flex mr-auto font-weight-bold">I am</div>
+                <!-- Default unchecked disabled -->
+                <div class="custom-control custom-radio d-flex mr-3">
+                  <input type="radio" class="custom-control-input" value="male" id="me-male" name="me-gender" checked>
+                  <label class="custom-control-label" for="me-male">Male</label>
+                </div>
+
+                <!-- Default checked disabled -->
+                <div class="custom-control custom-radio d-flex mr-5">
+                  <input type="radio" class="custom-control-input" value="female" id="me-female" name="me-gender">
+                  <label class="custom-control-label" for="me-female">Female</label>
+                </div>
+              </div>
+              <div class="col-md-6 d-flex">
+                <div class="d-flex mr-auto font-weight-bold">I prefer</div>
+                <!-- Default unchecked disabled -->
+                <div class="custom-control custom-radio d-flex mr-3">
+                  <input type="radio" class="custom-control-input" id="prefer-male" name="prefer-gender" checked>
+                  <label class="custom-control-label" for="prefer-male">Male</label>
+                </div>
+
+                <!-- Default checked disabled -->
+                <div class="custom-control custom-radio d-flex mr-5">
+                  <input type="radio" class="custom-control-input" id="prefer-female" name="prefer-gender">
+                  <label class="custom-control-label" for="prefer-female">Female</label>
+                </div>
+              </div>
+          </div>
+          <!--Grid row-->
+
+          <!--Grid row-->
+          <div class="row mt-5">
+            <div class="col-md-5">
+              <div class="d-flex mr-auto font-weight-bold" style="margin-top: -10px;">I prefer ages between</div>
+            </div>
+            <div class="col-md-7">
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-12 p-0">
+                    <div id="slider-range"></div>
+                  </div>
+                </div>
+                <!-- <div class="row slider-labels">
+                  <div class="col-xs-6 caption mr-auto">
+                    <strong>From: </strong> <span id="slider-range-value1"></span>
+                  </div>
+                  <div class="col-xs-6 text-right caption">
+                    <strong>To: </strong> <span id="slider-range-value2"></span>
+                  </div>
+                </div> -->
+                <div class="row">
+                  <div class="col-sm-12">
+                    <form>
+                      <input type="hidden" name="min-value" value="">
+                      <input type="hidden" name="max-value" value="">
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+
+        <div class="text-center mt-5" style="width: 100%;">
+          <a class="btn btn-primary m-auto" onclick="">Join</a>
         </div>
-        <!-- Browsing JS Libraries -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-        <!-- End of Browsing JS Libraries-->
+        <div class="status"></div>
+      </div>
+        <!--Grid column-->
+        
+    </div>
+  </section>
 
-        <!-- Customized Script -->
-        <script>
-            $(function() {
-                let socket = io.connect('http://localhost:8001', {
-                    query : {
-                        user_type:"guest"
-                    }
-                })
+  <!--Section: Contact v.2-->
+<!-- End your project here-->
 
-                var username = $('#username');
-                var confirmBtn = $('#confirm_username');
-                var message = $('#message');
-                var send = $('#send_message');
-                var find_pair = $("#find_pair");
-
-                var chatting_history = $("#chatting_history");
-
-                // Confirm Username
-                $(document).on('click', '#confirm_username', function(){
-                    console.log(username.val());
-                    socket.emit('ON_CONFIRM_NAME', { username: username.val() });
-                })
-
-                // Find Chatting Pair
-                $(document).on('click', '#find_pair', function(){
-                    socket.emit('ON_FIND_PAIR', { username: username.val() });
-                })
-
-                // Send a Message to Pair
-                $(document).on('click', '#send_message', function(){
-                    socket.emit('ON_NEW_MESSAGE', { 
-                        msg: message.val(),         // Text Message Content
-                        img: null,                  // Message Image URL
-                        vid: null                   // Message Video URL
-                    });
-                    var n_content = "<div class='snd_msg'>" + "You: " + message.val() + "</div>";
-                    chatting_history.append(n_content);
-                })
-
-                /**
-                 * Socket Receiving Message WorkFlow
-                 * **/
-
-                 // On Paired
-                 socket.on("ON_PAIRED", (data) => {
-                     console.log("ON_PAIRED", data);
-                 });
-
-                 // On Pair Failed
-                 socket.on("ON_PAIRFAILED", (data) => {
-                     console.log("ON_PAIRFAILED", data);
-                 });
-
-                 // On Receive New Message
-                 socket.on("NEW_MESSAGE", (data) => {
-                    console.log("ON NEW MESSAGE", data);
-                    var n_content = "<div class='rcv_msg'>" + data.sender + ": " + data.msg + "</div>";
-                    chatting_history.append(n_content);
-                 });
-            });
-        </script>
-        <!-- End Script -->
-    </body>
+  <!-- jQuery -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Slider JavaScript -->
+  <script type="text/javascript" src="js/slider.js"></script>
+  <!-- Your custom scripts (optional) -->
+  <script>
+  </script>
+</body>
 </html>

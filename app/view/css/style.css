@@ -1,5 +1,5 @@
 /* Login page */
-  #login {
+  #login, #chat {
     margin-top: 130px;
     box-shadow: 2px 2px 5px #bbb;
   }
@@ -17,3 +17,23 @@
     width: 40%;
   }
 /* Chat page */
+  .spinner-grow {
+    width: 200px;
+    height: 200px;
+    position: fixed;
+    top: calc( 50% - ( 200px / 2) ); /* where ... is the element's height */
+    right: calc( 50% - ( 200px / 2) ); /* where ... is the element's width */
+  }
+
+  #chat .dropdown-menu{
+
+  }
+  #chat .dropdown-menu .dropdown-item:active {
+    background-image: none;
+    
+    background-color: #000;
+  }
+  
+  #chat .dropdown-menu .dropdown-item:hover {
+    background-color: transparent;
+  }

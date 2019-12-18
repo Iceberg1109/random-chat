@@ -123,7 +123,6 @@
   }
   
   .noUi-handle:active {
-    border: 8px solid #345DBB;
     border: 8px solid rgba(53,93,187,0.38);
     -webkit-background-clip: padding-box;
     background-clip: padding-box;

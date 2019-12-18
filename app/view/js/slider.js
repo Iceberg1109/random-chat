@@ -24,8 +24,7 @@ $(document).ready(function() {
   
   // Set visual min and max values and also update value hidden form inputs
   rangeSlider.noUiSlider.on('update', function(values, handle) {
-    // document.getElementById('slider-range-value1').innerHTML = values[0];
-    // document.getElementById('slider-range-value2').innerHTML = values[1];
+    $('.noUi-handle').css({'background-color': '#345DBB'});
     $(".noUi-handle.noUi-handle-lower").text(values[0]);
     $(".noUi-handle.noUi-handle-upper").text(values[1]);
     document.getElementsByName('min-value').value = moneyFormat.from(

@@ -12,12 +12,13 @@ module.exports = {
     },
 
     // Guest confirm his user name
-    OnConfirmName: function(socket, username) {
+    OnConfirmJoin: function(socket, user_data) {
         m_sockets.forEach(element => {
             if(element.id == socket.id)
-                element.username = username
+                element.user_data = user_data;
         });
-        socket.emit("UNAME_CONFIRMED", username);
+        
+        socket.emit("USER_CONFIRMED", user_data.name);
     },
 
     // When a user searches his pair

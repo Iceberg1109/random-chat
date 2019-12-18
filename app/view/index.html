@@ -32,7 +32,7 @@
 
         <!--Grid column-->
       <div class="col-md-12 mb-md-0 mb-5">
-        <form id="contact-form" name="contact-form" action="mail.php" method="POST">
+        <form id="contact-form" name="contact-form" action="mail.php" method="POST" novalidate="">
 
           <!--Grid row-->
           <div class="row">
@@ -40,8 +40,8 @@
               <!--Grid column-->
               <div class="col-md-6">
                   <div class="md-form mb-0">
-                      <input type="text" id="name" name="name" class="form-control">
-                      <label for="name" class="">Your name</label>
+                    <input type="text" id="username" name="name" class="form-control" required>
+                    <label for="name" class="">Your name</label>
                   </div>
               </div>
               <!--Grid column-->
@@ -49,8 +49,8 @@
               <!--Grid column-->
               <div class="col-md-6">
                   <div class="md-form mb-0">
-                      <input type="number" id="age" name="age" class="form-control">
-                      <label for="age" class="">Your Age</label>
+                    <input type="number" id="age" name="age" class="form-control" required>
+                    <label for="age" class="">Your Age</label>
                   </div>
               </div>
               <!--Grid column-->
@@ -62,8 +62,8 @@
             <!--Grid column-->
             <div class="col-md-6">
                 <div class="md-form mb-0">
-                    <input type="text" id="country" name="country" class="form-control">
-                    <label for="country" class="">Your country</label>
+                  <input type="text" id="country" name="country" class="form-control" required>
+                  <label for="country" class="">Your country</label>
                 </div>
             </div>
             <!--Grid column-->
@@ -71,12 +71,11 @@
             <!--Grid column-->
             <div class="col-md-6">
                 <div class="md-form mb-0">
-                    <input type="text" id="state" name="state" class="form-control">
+                    <input type="text" id="state" name="state" class="form-control" required>
                     <label for="state" class="">Your state</label>
                 </div>
             </div>
             <!--Grid column-->
-
           </div>
           <!--Grid row-->
           <!--Grid row-->
@@ -85,13 +84,13 @@
                 <div class="d-flex mr-auto font-weight-bold">I am</div>
                 <!-- Default unchecked disabled -->
                 <div class="custom-control custom-radio d-flex mr-3">
-                  <input type="radio" class="custom-control-input" value="male" id="me-male" name="me-gender" checked>
+                  <input type="radio" class="custom-control-input" value="male" name="me-gender" checked>
                   <label class="custom-control-label" for="me-male">Male</label>
                 </div>
 
                 <!-- Default checked disabled -->
                 <div class="custom-control custom-radio d-flex mr-5">
-                  <input type="radio" class="custom-control-input" value="female" id="me-female" name="me-gender">
+                  <input type="radio" class="custom-control-input" value="female" name="me-gender">
                   <label class="custom-control-label" for="me-female">Female</label>
                 </div>
               </div>
@@ -99,13 +98,13 @@
                 <div class="d-flex mr-auto font-weight-bold">I prefer</div>
                 <!-- Default unchecked disabled -->
                 <div class="custom-control custom-radio d-flex mr-3">
-                  <input type="radio" class="custom-control-input" id="prefer-male" name="prefer-gender" checked>
+                  <input type="radio" class="custom-control-input" value="male" name="prefer-gender" checked>
                   <label class="custom-control-label" for="prefer-male">Male</label>
                 </div>
 
                 <!-- Default checked disabled -->
                 <div class="custom-control custom-radio d-flex mr-5">
-                  <input type="radio" class="custom-control-input" id="prefer-female" name="prefer-gender">
+                  <input type="radio" class="custom-control-input" value="female" name="prefer-gender">
                   <label class="custom-control-label" for="prefer-female">Female</label>
                 </div>
               </div>
@@ -145,7 +144,7 @@
         </form>
 
         <div class="text-center mt-5" style="width: 100%;">
-          <a class="btn btn-primary m-auto" onclick="">Join</a>
+          <a id="btn_join" class="btn btn-primary m-auto" onclick="">Join</a>
         </div>
         <div class="status"></div>
       </div>
@@ -156,7 +155,8 @@
 
   <!--Section: Contact v.2-->
 <!-- End your project here-->
-
+  <!-- Socket.io -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
   <!-- jQuery -->
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <!-- Bootstrap tooltips -->
@@ -167,8 +167,64 @@
   <script type="text/javascript" src="js/mdb.min.js"></script>
   <!-- Slider JavaScript -->
   <script type="text/javascript" src="js/slider.js"></script>
+  <!-- jQuery validation plugin -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+  
   <!-- Your custom scripts (optional) -->
   <script>
+    $(function() {
+      let socket = io.connect('http://localhost:8000', {
+        query : {
+          user_type:"guest"
+        }
+      });
+      
+      // Confirm Username
+      $(document).on('click', '#btn_join', function(){
+        var name = $('#username').val();
+        var age = $('#age').val();
+        var gender = $('input[name="me-gender"]:checked').val();
+        var pre_gender = $('input[name="prefer-gender"]:checked').val();
+        var pre_age_from = parseInt($(".noUi-handle.noUi-handle-lower").text());
+        var pre_age_to = parseInt($(".noUi-handle.noUi-handle-upper").text());
+        var country = $('#country').val();
+        var state = $('#state').val();
+        var confirmBtn = $('#btn_join');
+        var send = $('#send_message');
+        var find_pair = $("#find_pair");
+        var chatting_history = $("#chatting_history");
+        
+        var user_data = {
+          name: name,
+          age: age,
+          gender: gender,
+          pre_gender: pre_gender,
+          pre_age_from: pre_age_from,
+          pre_age_to: pre_age_to,
+          country: country,
+          state: state
+        }
+        console.log("aaaa", user_data);
+        
+        var form = $("#contact-form")
+
+        if (form[0].checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+          $('.noUi-handle').css({'background': '#34ce57'});
+        }
+        else {
+          socket.emit('ON_CONFIRM_NAME', user_data);
+          // alert('he');
+        }
+        form.addClass('was-validated');
+      })
+
+      socket.on("USER_CONFIRMED", (data) => {
+        console.log("user confirmed", data);
+
+      });
+  });
   </script>
 </body>
 </html>

@@ -9,9 +9,7 @@ SocketServer = function(http) {
     io.on('connection', function(socket) {
 
         console.log("New Connection from ", socket.id);
-
         ChatController.OnNewGuesJoined(socket);
-
         // On New Message
         /**
          * data = {msg: MESSAGE TEXT, img: IMAGE URL, vid: VIDEO URL}
@@ -23,7 +21,7 @@ SocketServer = function(http) {
         // On guest confirm username
         socket.on(CMD.ON_CONFIRM_NAME, (data) => {
             console.log(data);
-            ChatController.OnConfirmName(socket, data.username);
+            ChatController.OnConfirmJoin(socket, data);
         });
 
         // On Guest Find his pair

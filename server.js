@@ -6,11 +6,18 @@ let express = require('express'),
 const socketserver = require('./socket');
 dotenv.config();
 
-app.use(express.static(__dirname + '/app/view/'));
 var path = __dirname + '/app/view/';
+
+// var favicon = require('serve-favicon');
+// app.use(favicon(path + 'img/mdb-favicon.ico'));
+app.use(express.static(path));
   
 app.get("/",function(req,res){
     res.sendFile(path + "index.html");
+});
+
+app.get("/chat",function(req,res){
+    res.sendFile(path + "chat.html");
 });
 
 exports.server = http.listen(8000, function(){

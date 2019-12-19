@@ -49,7 +49,7 @@
               <!--Grid column-->
               <div class="col-md-6">
                   <div class="md-form mb-0">
-                    <input type="number" id="age" name="age" class="form-control" required>
+                    <input type="number" id="age" name="age" class="form-control" min=1 max=99 required>
                     <label for="age" class="">Your Age</label>
                   </div>
               </div>
@@ -169,11 +169,6 @@
   <!-- Your custom scripts (optional) -->
   <script>
     $(function() {
-      let socket = io.connect('http://localhost:8000', {
-        query : {
-          user_type:"guest"
-        }
-      });
       
       // Confirm Username
       $(document).on('click', '#btn_join', function(){
@@ -190,7 +185,7 @@
         var find_pair = $("#find_pair");
         var chatting_history = $("#chatting_history");
         
-        var user_data = {
+        let user_data = {
           name: name,
           age: age,
           gender: gender,
@@ -200,8 +195,6 @@
           country: country,
           state: state
         }
-        console.log("aaaa", user_data);
-        
         var form = $("#contact-form")
 
         if (form[0].checkValidity() === false) {
@@ -210,16 +203,11 @@
           $('.noUi-handle').css({'background': '#34ce57'});
         }
         else {
-          socket.emit('ON_CONFIRM_NAME', user_data);
-          // alert('he');
+          sessionStorage.setItem("user_data", JSON.stringify(user_data));
+          location.href = "/chat";
         }
         form.addClass('was-validated');
       })
-
-      socket.on("USER_CONFIRMED", (data) => {
-        console.log("user confirmed", data);
-        location.href = "/chat";
-      });
   });
   </script>
 </body>

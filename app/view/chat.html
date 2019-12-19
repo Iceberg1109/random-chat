@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <!-- Material Design Bootstrap -->
   <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Emoji Picker -->
+  <link rel="stylesheet" href="css/emojionearea.min.css">
   <!-- Slider Style -->
   <link rel="stylesheet" href="css/slider.css">
   <!-- Custom Styles -->
@@ -23,11 +25,7 @@
 <!-- Start your project here-->  
 
   <!--Section: Contact v.2-->
-  <div class="spinner-grow slow m-auto text-success d-none" role="status">
-    <span class="sr-only"></span>
-  </div>
-
-  <section class="col-sm-12 col-md-8 mx-auto p-0" id="chat">
+  <section class="col-sm-12 col-md-8 m-auto p-0">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       <!-- Links -->
@@ -95,26 +93,68 @@
       </ul>
     </nav>
     <!-- main Container -->
-    <div class="row">
+    <div class="row mt-3">
       <div class="col-sm-12">
-        <div>AAAA is joined</div>
-        <div>AAAA is left</div>
       </div>
-      <div class="col-sm-12">
-        <div class="float-left">
-          hi
-        </div>
-        <div class="float-right">
-          hi
+      <div class="col-sm-12 m-auto">
+        <div class="chat">
+          <div class="chat-history">
+            <ul style="list-style-type: none;" class="pl-0">
+              <li style="display: flex;">
+                <div class="message">
+                  a
+                </div>
+              </li>
+              <li style="display: flex;justify-content: flex-end;">
+                <div class="message me">
+                  b
+                </div>
+              </li>
+          
+            </ul>
+            
+          </div> <!-- end chat-history -->
+          
+          <div class="chat-message">
+            <i class="fas fa-file-image img-btn"></i>
+            <div class="input-container">
+              <input name="msg-txt" class="msg-txt" placeholder ="Type your message" rows="1" />
+              <i class="far fa-paper-plane send-btn"></i>
+            </div>
+          </div> <!-- end chat-message -->
         </div>
       </div>
     </div>
   </section>
+  
+  <div class="loader connecting-loader">Loading...</div>
+  
+  <script id="message-template" type="text/x-handlebars-template">
+    <li style="display: flex;justify-content: flex-end;margin-top: 10px;">
+      <div class="message me">
+        {{messageOutput}}
+      </div>
+    </li>   
+  </script>
 
+  <script id="message-response-template" type="text/x-handlebars-template">
+    <li style="display: flex;margin-top: 10px;">
+      <div class="message">
+        {{response}}
+      </div>
+    </li>
+  </script>
+
+  <script id="message-response-typing" type="text/x-handlebars-template">
+    <li>
+      <div class="loader typing-loader">Loading...</div>
+    </li>
+  </script>
   <!--Section: Contact v.2-->
 <!-- End your project here-->
   <!-- Socket.io -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+  <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
   <!-- jQuery -->
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <!-- Bootstrap tooltips -->
@@ -123,70 +163,109 @@
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Emoji Picker JavaScript -->
+  <script type="text/javascript" src="js/emojionearea.min.js"></script>
   <!-- Slider JavaScript -->
   <script type="text/javascript" src="js/slider.js"></script>
-  
   <!-- Your custom scripts (optional) -->
   <script>
     $(document).on('click', '.dropdown-menu', function (e) {
       e.stopPropagation();
     });
+
     $(function() {
       let socket = io.connect('http://localhost:8000', {
         query : {
           user_type:"guest"
         }
       });
+      let user_data = JSON.parse(sessionStorage.user_data);
       
       $(document).ready(function() {
+        // Show loading spinner, hide main section
+        $(".connecting-loader").css({'display':'block'});
+        $('section').css({'filter': 'blur(58px)', '-webkit-filter': 'blur(58px)'});
+        // Set emoji picker
+        $(".msg-txt").emojioneArea({
+          pickerPosition: "top",
+          filtersPosition: "bottom",
+        });
+        // Send socket connection request,
         socket.emit('ON_CONFIRM_NAME', user_data);
       });
-      // Confirm Username
-      $(document).on('click', '#btn_join', function(){
-        var name = $('#username').val();
-        var age = $('#age').val();
-        var gender = $('input[name="me-gender"]:checked').val();
-        var pre_gender = $('input[name="prefer-gender"]:checked').val();
-        var pre_age_from = parseInt($(".noUi-handle.noUi-handle-lower").text());
-        var pre_age_to = parseInt($(".noUi-handle.noUi-handle-upper").text());
-        var country = $('#country').val();
-        var state = $('#state').val();
-        var confirmBtn = $('#btn_join');
-        var send = $('#send_message');
-        var find_pair = $("#find_pair");
-        var chatting_history = $("#chatting_history");
-        
-        var user_data = {
-          name: name,
-          age: age,
-          gender: gender,
-          pre_gender: pre_gender,
-          pre_age_from: pre_age_from,
-          pre_age_to: pre_age_to,
-          country: country,
-          state: state
-        }
-        console.log("aaaa", user_data);
-        
-        var form = $("#contact-form")
-
-        if (form[0].checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-          $('.noUi-handle').css({'background': '#34ce57'});
-        }
-        else {
-          socket.emit('ON_CONFIRM_NAME', user_data);
-          // alert('he');
-        }
-        form.addClass('was-validated');
-      })
-
       socket.on("USER_CONFIRMED", (data) => {
+        // Hide loading spinner, remove main section blur
+        $(".connecting-loader").css({'display':'none'});
+        $('section').css({'filter': '', '-webkit-filter': ''});
         console.log("user confirmed", data);
-        location.href = "/chat";
       });
-  });
+    
+      var chat = {
+        messageToSend: '',
+        init: function() {
+          this.cacheDOM();
+          this.bindEvents();
+          this.render();
+        },
+        cacheDOM: function() {
+          this.$chatHistory = $('.chat-history');
+          this.$button = $('.send-btn');
+          this.$textinput = $('.msg-txt');
+          this.$chatHistoryList =  this.$chatHistory.find('ul');
+        },
+        bindEvents: function() {
+          this.$button.on('click', this.addMessage.bind(this));
+          this.$textinput.on('keyup', this.addMessageEnter.bind(this));
+        },
+        render: function() {
+          
+          if (this.messageToSend.trim() !== '') {
+            var template = Handlebars.compile( $("#message-template").html());
+            var context = { 
+              messageOutput: this.messageToSend,
+              name: "Sender"
+            };
+
+            this.$chatHistoryList.append(template(context));
+            this.scrollToBottom();
+            this.$textinput.val('');
+            
+            // responses
+            var templateResponse = Handlebars.compile( $("#message-response-template").html());
+            var contextResponse = { 
+              response: "Reponse here",
+              name: "Receiver"
+            };
+            
+            setTimeout(function() {
+              this.$chatHistoryList.append(templateResponse(contextResponse));
+              this.scrollToBottom();
+            }.bind(this), 400);
+          }
+          
+        },
+        
+        addMessage: function() {
+          console.log("aaa");
+          this.messageToSend = this.$textinput.val()
+          this.render();         
+        },
+        addMessageEnter: function(event) {
+          console.log("bbb");
+            // enter was pressed
+            if (event.keyCode === 13) {
+              this.addMessage();
+            }
+        },
+        scrollToBottom: function() {
+          this.$chatHistory.scrollTop(this.$chatHistory[0].scrollHeight);
+        },
+      };
+      
+      chat.init();
+      
+    });
+
   </script>
 </body>
 </html>

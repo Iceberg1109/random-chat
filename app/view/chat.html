@@ -20,14 +20,14 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body style="height: 100vh;">
 
 <!-- Start your project here-->  
 
   <!--Section: Contact v.2-->
-  <section class="col-sm-12 col-md-8 m-auto p-0">
+  <section class="col-sm-12 col-md-8 m-auto p-0" style="margin-top: 5vh!important;">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <nav class="navbar navbar-expand-sm" style="background-color: #e0f5fe;">
       <!-- Links -->
       <ul class="navbar-nav">
         
@@ -100,17 +100,6 @@
         <div class="chat">
           <div class="chat-history">
             <ul style="list-style-type: none;" class="pl-0">
-              <li style="display: flex;">
-                <div class="message">
-                  a
-                </div>
-              </li>
-              <li style="display: flex;justify-content: flex-end;">
-                <div class="message me">
-                  b
-                </div>
-              </li>
-          
             </ul>
             
           </div> <!-- end chat-history -->
@@ -146,7 +135,7 @@
   </script>
 
   <script id="message-response-typing" type="text/x-handlebars-template">
-    <li>
+    <li class="typing">
       <div class="loader typing-loader">Loading...</div>
     </li>
   </script>
@@ -174,6 +163,7 @@
     });
 
     $(function() {
+      this.$paired = false;
       let socket = io.connect('http://localhost:8000', {
         query : {
           user_type:"guest"
@@ -189,73 +179,134 @@
         $(".msg-txt").emojioneArea({
           pickerPosition: "top",
           filtersPosition: "bottom",
+          events: {
+            keyup: function (editor, event) {
+              console.log(editor.text());
+              if (editor.text()) {
+                // enter was pressed
+                socket.emit('MESSAGE_TYPING');
+              }
+              else {
+                socket.emit('MESSAGE_DONE_TYPING');
+              }
+              if (event.keyCode === 13) {
+                chat.sendMessage();
+              }
+            },
+          }
         });
+        
         // Send socket connection request,
         socket.emit('ON_CONFIRM_NAME', user_data);
       });
       socket.on("USER_CONFIRMED", (data) => {
         // Hide loading spinner, remove main section blur
-        $(".connecting-loader").css({'display':'none'});
-        $('section').css({'filter': '', '-webkit-filter': ''});
+        // $(".connecting-loader").css({'display':'none'});
+        // $('section').css({'filter': '', '-webkit-filter': ''});
         console.log("user confirmed", data);
+        socket.emit('ON_FIND_PAIR');
       });
-    
+      // On paired
+      socket.on("ON_PAIRED", (data) => {
+          console.log("ON_PAIRED", data);
+          $(".connecting-loader").css({'display':'none'});
+          $('section').css({'filter': '', '-webkit-filter': ''});
+          $('.chat-history ul').html('');
+          this.$paired = true;
+      });
+      // On Pair Failed
+      socket.on("ON_PAIRFAILED", (data) => {
+          console.log("ON_PAIRFAILED", data);
+          alert("Sorry, We can't find the pair!Please Change the filter and try again!");
+          $(".connecting-loader").css({'display':'none'});
+          $('section').css({'filter': '', '-webkit-filter': ''});
+      });
+      // On Receive New Message
+      socket.on("NEW_MESSAGE", (data) => {
+        console.log("ON NEW MESSAGE", data);
+        chat.addResponseMsg(data.msg);
+      });
+      // On Typing Message
+      socket.on("MESSAGE_TYPING", (data) => {
+        console.log("Typing");
+        chat.addTyping();
+      });
+      // On Done Typing Message
+      socket.on("MESSAGE_DONE_TYPING", (data) => {
+        console.log("Done typing");
+        chat.doneTyping();
+      });
+
       var chat = {
         messageToSend: '',
         init: function() {
           this.cacheDOM();
           this.bindEvents();
-          this.render();
         },
         cacheDOM: function() {
           this.$chatHistory = $('.chat-history');
           this.$button = $('.send-btn');
           this.$textinput = $('.msg-txt');
           this.$chatHistoryList =  this.$chatHistory.find('ul');
+          this.$typing = false;
         },
         bindEvents: function() {
-          this.$button.on('click', this.addMessage.bind(this));
-          this.$textinput.on('keyup', this.addMessageEnter.bind(this));
+          this.$button.on('click', this.sendMessage.bind(this));
         },
-        render: function() {
+        addResponseMsg: function(msg) {
+          this.doneTyping();
+          // responses
+          var templateResponse = Handlebars.compile( $("#message-response-template").html());
+          var contextResponse = { 
+            response: msg
+            // name: "Receiver"
+          };
           
+          setTimeout(function() {
+            this.$chatHistoryList.append(templateResponse(contextResponse));
+            this.scrollToBottom();
+          }.bind(this), 400);
+        },
+        addTyping: function() {
+          // responses
+          console.log(this.$typing);
+          if (this.$typing == false) {
+            var templateResponse = Handlebars.compile( $("#message-response-typing").html());
+            
+            setTimeout(function() {
+              this.$chatHistoryList.append(templateResponse());
+              this.scrollToBottom();
+            }.bind(this), 400);
+            this.$typing = true;
+          }
+        },
+        doneTyping: function() {
+          // responses
+          $('.typing').remove();
+          this.$typing = false;
+        },
+        sendMessage: function() {
+          console.log("aaa");
+          console.log(this.$paired);
+          this.messageToSend = this.$textinput[0].emojioneArea.getText();
           if (this.messageToSend.trim() !== '') {
             var template = Handlebars.compile( $("#message-template").html());
             var context = { 
-              messageOutput: this.messageToSend,
-              name: "Sender"
+              messageOutput: this.messageToSend
+              // name: "Sender"
             };
-
+            
             this.$chatHistoryList.append(template(context));
             this.scrollToBottom();
-            this.$textinput.val('');
-            
-            // responses
-            var templateResponse = Handlebars.compile( $("#message-response-template").html());
-            var contextResponse = { 
-              response: "Reponse here",
-              name: "Receiver"
-            };
-            
-            setTimeout(function() {
-              this.$chatHistoryList.append(templateResponse(contextResponse));
-              this.scrollToBottom();
-            }.bind(this), 400);
+            this.$textinput[0].emojioneArea.setText('');
+
+            socket.emit('ON_NEW_MESSAGE', { 
+              msg: this.messageToSend,    // Text Message Content
+              img: null,                  // Message Image URL
+              vid: null                   // Message Video URL
+            });
           }
-          
-        },
-        
-        addMessage: function() {
-          console.log("aaa");
-          this.messageToSend = this.$textinput.val()
-          this.render();         
-        },
-        addMessageEnter: function(event) {
-          console.log("bbb");
-            // enter was pressed
-            if (event.keyCode === 13) {
-              this.addMessage();
-            }
+          // this.render();
         },
         scrollToBottom: function() {
           this.$chatHistory.scrollTop(this.$chatHistory[0].scrollHeight);
@@ -267,5 +318,5 @@
     });
 
   </script>
-</body>
+</bodystyle="overflow:hidden; margin:0">
 </html>

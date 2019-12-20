@@ -22,23 +22,38 @@ module.exports = {
     },
 
     // When a user searches his pair
-    OnCreateNewPair: function(socket) {
+    OnCreateNewPair: function(socket, data) {
         // Pull 2 sockets including requested socket, and idle socket and pair it
+        console.log("Create Pair");
         var ind1 = 0, ind2=0;
         var dif_found = false, same_found = false;
         var res_sock;
+        var me;
         var paired = false;
+        // Find me
         m_sockets.forEach(element => {
-            if((element.id != socket.id && element.isSearching)){
+            if(element.id == socket.id){
+                element.isSearching = true;
+                me = element;
+                return;
+            }
+        });
+        // Find pair
+        // console.log("Me id: ", me.id);
+        m_sockets.forEach(element => {
+            // console.log(element.user_data);
+            if( element.id != me.id && element.isSearching 
+                && element.user_data.age >= me.user_data.pre_age_from
+                && element.user_data.age <= me.user_data.pre_age_to
+                && element.user_data.gender == me.user_data.pre_gender) {
                 // Add new pair to pairs
-                pairs.push({f: socket, s:element});
+                pairs.push({f: me, s:element});
                 dif_found = true;
                 res_sock = element;
-            } else if(element.id == socket.id){
+            } else if(element.id == me.id){
                 same_found = true;
                 element.isSearching = true;
             }
-
 
             if(!dif_found)
                 ind1 ++;
@@ -60,8 +75,10 @@ module.exports = {
         });
         // Send Search Result to both Sides
         if(paired){
-            socket.emit("ON_PAIRED", { username: res_sock.username, pair_id: res_sock.id });
-            res_sock.emit("ON_PAIRED", { username: socket.username, pair_id: socket.id });
+            // console.log(res_sock.user_data.name);
+            // console.log(me.user_data.name);
+            socket.emit("ON_PAIRED", { username: res_sock.user_data.name, pair_id: res_sock.id });
+            res_sock.emit("ON_PAIRED", { username: me.user_data.name, pair_id: socket.id });
         }
         else socket.emit("ON_PAIRFAILED", null);
     },
@@ -114,9 +131,34 @@ module.exports = {
     OnEditMessage: function() {
         console.log("You Edited a Message");
     },
-
+    OnTyping: function(sender) {
+        // console.log("typing");
+        pairs.forEach(element => {
+            if(element.f.id == sender.id){
+                element.s.emit("MESSAGE_TYPING");
+                return;
+            } else if(element.s.id ==  sender.id) {
+                element.f.emit("MESSAGE_TYPING");
+                return;
+            }
+        });
+    },
+    OnDoneTyping: function(sender) {
+        // console.log("done typing");
+        pairs.forEach(element => {
+            if(element.f.id == sender.id){
+                element.s.emit("MESSAGE_DONE_TYPING");
+                return;
+            } else if(element.s.id ==  sender.id) {
+                element.f.emit("MESSAGE_DONE_TYPING");
+                return;
+            }
+        });
+    },
     // On Socket Connection Closed
     OnCloseConnection: function(socket) {
+        console.log(m_sockets);
+        // console.log(pairs);
         // Find if closed guest is not yet paired and remove it from sockets list if not paired yet.
         var ind = 0;
         m_sockets.forEach(element => {
@@ -124,8 +166,9 @@ module.exports = {
                 return;
             ind ++;
         });
-        m_sockets.slice(ind, 1);
-
+        console.log("s ", ind);
+        m_sockets = m_sockets.splice(ind, 1);
+        console.log("s ", m_sockets.length);
         // Find if closed guest is paired and remove that socket from pair group, and move paired guest to sockets list
         ind = 0;
         pairs.forEach(element => {
@@ -138,5 +181,8 @@ module.exports = {
             else m_sockets.push(pairs[ind].f);
             pairs.slice(ind, 1);
         }
+        console.log(m_sockets.length);
+        console.log(pairs.length);
+        
     }
 }

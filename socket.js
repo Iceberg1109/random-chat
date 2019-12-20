@@ -20,7 +20,6 @@ SocketServer = function(http) {
 
         // On guest confirm username
         socket.on(CMD.ON_CONFIRM_NAME, (data) => {
-            console.log(data);
             ChatController.OnConfirmJoin(socket, data);
         });
 
@@ -29,6 +28,16 @@ SocketServer = function(http) {
             ChatController.OnCreateNewPair(socket);
         })
 
+        // On Message Typing
+        socket.on(CMD.MESSAGE_TYPING, (data) => {
+            ChatController.OnTyping(socket);
+        })
+        
+        // On Message Done Typing
+        socket.on(CMD.MESSAGE_DONE_TYPING, (data) => {
+            ChatController.OnDoneTyping(socket);
+        })
+        
         // On Client Socket disconnected from Server Socket
         socket.on('disconnect', function(){
             ChatController.OnCloseConnection(socket);

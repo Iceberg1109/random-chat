@@ -64,10 +64,12 @@ module.exports = {
                 if(ind1>ind2){
                     m_sockets.splice(ind1, 1);
                     m_sockets.splice(ind2, 1);
+                    console.log(m_sockets.length);
                     paired = true;
                 } else if (ind1 < ind2) {
                     m_sockets.splice(ind2, 1);
                     m_sockets.splice(ind1, 1);
+                    console.log(m_sockets.length);
                     paired = true;
                 }
                 return;
@@ -167,7 +169,7 @@ module.exports = {
             ind ++;
         });
         console.log("s ", ind);
-        m_sockets = m_sockets.splice(ind, 1);
+        m_sockets.splice(ind, 1);
         console.log("s ", m_sockets.length);
         // Find if closed guest is paired and remove that socket from pair group, and move paired guest to sockets list
         ind = 0;
@@ -176,6 +178,8 @@ module.exports = {
                 return;
             ind ++;
         });
+        console.log("p length ", pairs.length);
+        console.log("p ind ", ind);
         if(pairs.length > 0) {
             if(pairs[ind].f.id == socket.id) m_sockets.push(pairs[ind].s);
             else m_sockets.push(pairs[ind].f);

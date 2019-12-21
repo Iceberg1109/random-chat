@@ -25,14 +25,27 @@
   a.btn-primary {
     width: 40%;
   }
-/* Chat page */
-  #filter .dropdown-menu{
+  
+  #country, #state {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+  }
 
+  .tooltipster-default {
+    border-radius: 1px; 
+    border: 1px solid #eee;
+   
+    background: #dc3545;
+    color: white;
+  }
+/* Chat page */
+  #filter .dropdown-menu:active{
   }
 
   #filter .dropdown-menu .dropdown-item:active {
     background-image: none;
-    background-color: #000;
+    background-color: transparent;
   }
   
   #filter .dropdown-menu .dropdown-item:hover {

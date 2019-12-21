@@ -31,7 +31,7 @@
       <!-- Links -->
       <ul class="navbar-nav">
         
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" id="filter">
           <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
             <i class="fas fa-sliders-h" style="font-size: 1.6em;"></i>
           </a>
@@ -69,15 +69,37 @@
                 </div>
               </div>
             </a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Save</a>
+            <a class="dropdown-item" href="#">
+              <div class="row">
+                <div class="col-sm-12 col-md-6">
+                  <div class="md-form mb-0">
+                    <!-- <input type="text" id="country" name="country" class="form-control" required> -->
+                    <select id="country" class="form-control" name ="country" required></select>
+                  </div>
+                </div>
+                <!--Grid column-->
+    
+                <!--Grid column-->
+                <div class="col-sm-12 col-md-6">
+                    <div class="md-form mb-0">
+                        <!-- <input type="text" id="state" name="state" class="form-control" required> -->
+                        <select name="state" class="form-control" id ="state" required>
+                          <option>Select State</option>
+                        </select>
+                    </div>
+                </div>
+              </div>
+            </a>
+            <a class="dropdown-item clearfix">
+              <button class="btn btn-primary float-left" id="save">Save</button>
+              <button class="btn btn-light float-right" id="cancel">Cancel</button>
+            </a>
           </div>
         </li>
       </ul>
       <ul class="nav navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">Next pair</a>
+          <a class="nav-link font-weight-bold" href="#" id="nextuser">Next User</a>
         </li>
 
         <li class="nav-item dropdown">
@@ -144,6 +166,7 @@
   <!-- Socket.io -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
   <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
   <!-- jQuery -->
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <!-- Bootstrap tooltips -->
@@ -156,167 +179,9 @@
   <script type="text/javascript" src="js/emojionearea.min.js"></script>
   <!-- Slider JavaScript -->
   <script type="text/javascript" src="js/slider.js"></script>
+  <!-- Countries List -->
+  <script type= "text/javascript" src = "js/countries.js"></script>
   <!-- Your custom scripts (optional) -->
-  <script>
-    $(document).on('click', '.dropdown-menu', function (e) {
-      e.stopPropagation();
-    });
-
-    $(function() {
-      this.$paired = false;
-      let socket = io.connect('http://localhost:8000', {
-        query : {
-          user_type:"guest"
-        }
-      });
-      let user_data = JSON.parse(sessionStorage.user_data);
-      
-      $(document).ready(function() {
-        // Show loading spinner, hide main section
-        $(".connecting-loader").css({'display':'block'});
-        $('section').css({'filter': 'blur(58px)', '-webkit-filter': 'blur(58px)'});
-        // Set emoji picker
-        $(".msg-txt").emojioneArea({
-          pickerPosition: "top",
-          filtersPosition: "bottom",
-          events: {
-            keyup: function (editor, event) {
-              console.log(editor.text());
-              if (editor.text()) {
-                // enter was pressed
-                socket.emit('MESSAGE_TYPING');
-              }
-              else {
-                socket.emit('MESSAGE_DONE_TYPING');
-              }
-              if (event.keyCode === 13) {
-                chat.sendMessage();
-              }
-            },
-          }
-        });
-        
-        // Send socket connection request,
-        socket.emit('ON_CONFIRM_NAME', user_data);
-      });
-      socket.on("USER_CONFIRMED", (data) => {
-        // Hide loading spinner, remove main section blur
-        // $(".connecting-loader").css({'display':'none'});
-        // $('section').css({'filter': '', '-webkit-filter': ''});
-        console.log("user confirmed", data);
-        socket.emit('ON_FIND_PAIR');
-      });
-      // On paired
-      socket.on("ON_PAIRED", (data) => {
-          console.log("ON_PAIRED", data);
-          $(".connecting-loader").css({'display':'none'});
-          $('section').css({'filter': '', '-webkit-filter': ''});
-          $('.chat-history ul').html('');
-          this.$paired = true;
-      });
-      // On Pair Failed
-      socket.on("ON_PAIRFAILED", (data) => {
-          console.log("ON_PAIRFAILED", data);
-          alert("Sorry, We can't find the pair!Please Change the filter and try again!");
-          $(".connecting-loader").css({'display':'none'});
-          $('section').css({'filter': '', '-webkit-filter': ''});
-      });
-      // On Receive New Message
-      socket.on("NEW_MESSAGE", (data) => {
-        console.log("ON NEW MESSAGE", data);
-        chat.addResponseMsg(data.msg);
-      });
-      // On Typing Message
-      socket.on("MESSAGE_TYPING", (data) => {
-        console.log("Typing");
-        chat.addTyping();
-      });
-      // On Done Typing Message
-      socket.on("MESSAGE_DONE_TYPING", (data) => {
-        console.log("Done typing");
-        chat.doneTyping();
-      });
-
-      var chat = {
-        messageToSend: '',
-        init: function() {
-          this.cacheDOM();
-          this.bindEvents();
-        },
-        cacheDOM: function() {
-          this.$chatHistory = $('.chat-history');
-          this.$button = $('.send-btn');
-          this.$textinput = $('.msg-txt');
-          this.$chatHistoryList =  this.$chatHistory.find('ul');
-          this.$typing = false;
-        },
-        bindEvents: function() {
-          this.$button.on('click', this.sendMessage.bind(this));
-        },
-        addResponseMsg: function(msg) {
-          this.doneTyping();
-          // responses
-          var templateResponse = Handlebars.compile( $("#message-response-template").html());
-          var contextResponse = { 
-            response: msg
-            // name: "Receiver"
-          };
-          
-          setTimeout(function() {
-            this.$chatHistoryList.append(templateResponse(contextResponse));
-            this.scrollToBottom();
-          }.bind(this), 400);
-        },
-        addTyping: function() {
-          // responses
-          console.log(this.$typing);
-          if (this.$typing == false) {
-            var templateResponse = Handlebars.compile( $("#message-response-typing").html());
-            
-            setTimeout(function() {
-              this.$chatHistoryList.append(templateResponse());
-              this.scrollToBottom();
-            }.bind(this), 400);
-            this.$typing = true;
-          }
-        },
-        doneTyping: function() {
-          // responses
-          $('.typing').remove();
-          this.$typing = false;
-        },
-        sendMessage: function() {
-          console.log("aaa");
-          console.log(this.$paired);
-          this.messageToSend = this.$textinput[0].emojioneArea.getText();
-          if (this.messageToSend.trim() !== '') {
-            var template = Handlebars.compile( $("#message-template").html());
-            var context = { 
-              messageOutput: this.messageToSend
-              // name: "Sender"
-            };
-            
-            this.$chatHistoryList.append(template(context));
-            this.scrollToBottom();
-            this.$textinput[0].emojioneArea.setText('');
-
-            socket.emit('ON_NEW_MESSAGE', { 
-              msg: this.messageToSend,    // Text Message Content
-              img: null,                  // Message Image URL
-              vid: null                   // Message Video URL
-            });
-          }
-          // this.render();
-        },
-        scrollToBottom: function() {
-          this.$chatHistory.scrollTop(this.$chatHistory[0].scrollHeight);
-        },
-      };
-      
-      chat.init();
-      
-    });
-
-  </script>
-</bodystyle="overflow:hidden; margin:0">
+  <script type= "text/javascript" src = "js/chat.js"></script>
+</body>
 </html>

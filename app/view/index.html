@@ -15,8 +15,10 @@
   <link rel="stylesheet" href="css/mdb.min.css">
   <!-- Slider Style -->
   <link rel="stylesheet" href="css/slider.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/css/tooltipster.min.css">
   <!-- Custom Styles -->
   <link rel="stylesheet" href="css/style.css">
+  
 </head>
 <body>
 
@@ -32,7 +34,7 @@
 
         <!--Grid column-->
       <div class="col-md-12 mb-md-0 mb-5">
-        <form id="contact-form" novalidate="">
+        <form id="contact-form">
 
           <!--Grid row-->
           <div class="row">
@@ -62,8 +64,8 @@
             <!--Grid column-->
             <div class="col-md-6">
                 <div class="md-form mb-0">
-                  <input type="text" id="country" name="country" class="form-control" required>
-                  <label for="country" class="">Your country</label>
+                  <!-- <input type="text" id="country" name="country" class="form-control" required> -->
+                  <select id="country" class="form-control" name ="country" required></select>
                 </div>
             </div>
             <!--Grid column-->
@@ -71,8 +73,10 @@
             <!--Grid column-->
             <div class="col-md-6">
                 <div class="md-form mb-0">
-                    <input type="text" id="state" name="state" class="form-control" required>
-                    <label for="state" class="">Your state</label>
+                    <!-- <input type="text" id="state" name="state" class="form-control" required> -->
+                    <select name="state" class="form-control" id ="state" required>
+                      <option>Select State</option>
+                    </select>
                 </div>
             </div>
             <!--Grid column-->
@@ -121,28 +125,21 @@
                     <div id="slider-range"></div>
                   </div>
                 </div>
-                <!-- <div class="row slider-labels">
-                  <div class="col-xs-6 caption mr-auto">
-                    <strong>From: </strong> <span id="slider-range-value1"></span>
-                  </div>
-                  <div class="col-xs-6 text-right caption">
-                    <strong>To: </strong> <span id="slider-range-value2"></span>
-                  </div>
-                </div> -->
                 <div class="row">
                   <div class="col-sm-12">
-                    <form>
+                    <div>
                       <input type="hidden" name="min-value" value="">
                       <input type="hidden" name="max-value" value="">
-                    </form>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
         </form>
 
         <div class="text-center mt-5" style="width: 100%;">
-          <a id="btn_join" class="btn btn-primary m-auto" onclick="">Join</a>
+          <a id="btn_join" class="btn btn-primary m-auto">Join</a>
         </div>
         <div class="status"></div>
       </div>
@@ -165,48 +162,102 @@
   <script type="text/javascript" src="js/mdb.min.js"></script>
   <!-- Slider JavaScript -->
   <script type="text/javascript" src="js/slider.js"></script>
-  
+  <!-- Countries List -->
+  <script type= "text/javascript" src = "js/countries.js"></script>
   <!-- Your custom scripts (optional) -->
+  <script type= "text/javascript" src = "https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+  <script type= "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/js/jquery.tooltipster.min.js"></script>
+  
   <script>
-    $(function() {
-      
-      // Confirm Username
-      $(document).on('click', '#btn_join', function(){
-        var name = $('#username').val();
-        var age = $('#age').val();
-        var gender = $('input[name="me-gender"]:checked').val();
-        var pre_gender = $('input[name="prefer-gender"]:checked').val();
-        var pre_age_from = parseInt($(".noUi-handle.noUi-handle-lower").text());
-        var pre_age_to = parseInt($(".noUi-handle.noUi-handle-upper").text());
-        var country = $('#country').val();
-        var state = $('#state').val();
-        var confirmBtn = $('#btn_join');
-        var send = $('#send_message');
-        var find_pair = $("#find_pair");
-        var chatting_history = $("#chatting_history");
-        
-        let user_data = {
-          name: name,
-          age: age,
-          gender: gender,
-          pre_gender: pre_gender,
-          pre_age_from: pre_age_from,
-          pre_age_to: pre_age_to,
-          country: country,
-          state: state
-        }
-        var form = $("#contact-form")
+    populateCountries("country", "state");
 
-        if (form[0].checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-          $('.noUi-handle').css({'background': '#34ce57'});
-        }
-        else {
-          sessionStorage.setItem("user_data", JSON.stringify(user_data));
-          location.href = "/chat";
-        }
-        form.addClass('was-validated');
+    $(function() {
+      $('#contact-form input[type="text"]').tooltipster({ 
+        trigger: 'custom', // default is 'hover' which is no good here
+        onlyOne: false,    // allow multiple tips to be open at a time
+        position: 'bottom'  // display the tips to the right of the element
+      });
+      $('#contact-form input[type="number"]').tooltipster({ 
+        trigger: 'custom', // default is 'hover' which is no good here
+        onlyOne: false,    // allow multiple tips to be open at a time
+        position: 'bottom'  // display the tips to the right of the element
+      });
+      $('#contact-form select').tooltipster({ 
+        trigger: 'custom', // default is 'hover' which is no good here
+        onlyOne: false,    // allow multiple tips to be open at a time
+        position: 'bottom'  // display the tips to the right of the element
+      });
+      // Confirm Username
+      $(document).on('click', '#btn_join', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('aaa');
+        jQuery.validator.addMethod("checkCountry", function(value, element) {
+          console.log('cccc');
+          if ($("#country")[0].selectedIndex == 0)
+            return false;
+          return true;
+        }, "* Please select the country");
+        jQuery.validator.addMethod("checkState", function(value, element) {
+          console.log('sssss');
+          if ($("#state")[0].selectedIndex == 0)
+            return false;
+          return true;
+        }, "* Please select the state");
+
+        $("#contact-form").validate({
+          rules: {
+            country: {checkCountry: true},
+            state: { checkState: true}
+          },
+          errorPlacement: function (error, element) {
+            $(element).tooltipster('update', $(error).text());
+            $(element).tooltipster('show');
+          },
+          success: function (label, element) {
+            $(element).tooltipster('hide');
+          
+            console.log('valid');
+            var name = $('#username').val();
+            var age = $('#age').val();
+            var gender = $('input[name="me-gender"]:checked').val();
+            var pre_gender = $('input[name="prefer-gender"]:checked').val();
+            var pre_age_from = parseInt($(".noUi-handle.noUi-handle-lower").text());
+            var pre_age_to = parseInt($(".noUi-handle.noUi-handle-upper").text());
+            var country = $('#country').val();
+            var state = $('#state').val();
+            var confirmBtn = $('#btn_join');
+            var send = $('#send_message');
+            var find_pair = $("#find_pair");
+            var chatting_history = $("#chatting_history");
+            
+            let user_data = {
+              name: name,
+              age: age,
+              gender: gender,
+              pre_gender: pre_gender,
+              pre_age_from: pre_age_from,
+              pre_age_to: pre_age_to,
+              country: country,
+              state: state
+            }
+
+            sessionStorage.setItem("user_data", JSON.stringify(user_data));
+            // location.href = "/chat";
+          }
+        });
+        $("#contact-form").valid();
+        // var form = $("#contact-form")
+
+        // if (form[0].checkValidity() === false) {
+        //   event.preventDefault();
+        //   event.stopPropagation();
+        //   $('.noUi-handle').css({'background': '#34ce57'});
+        // }
+        // else {
+          
+        // }
+        // form.addClass('was-validated');
       })
   });
   </script>

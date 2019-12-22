@@ -8,6 +8,7 @@ $(document).on('click', '#save', function (e) {
 $(document).on('click', '#cancel', function (e) {
   $("#filter .dropdown-menu").removeClass('show');
 });
+
 // Disable auto close of dropdown menu when click inside the menu
 $(document).on('click', '.dropdown-menu', function (e) {
   e.stopPropagation();
@@ -22,8 +23,6 @@ $(function() {
   });
   let user_data = JSON.parse(sessionStorage.user_data);
   
-  $(document).on('click', )
-
   $(document).ready(function() {
     // Show loading spinner, hide main section
     $(".connecting-loader").css({'display':'block'});
@@ -48,7 +47,33 @@ $(function() {
         },
       }
     });
+  });
+  // Change the filter
+  $(document).on('click', '#save', function (e) {
+    // Show loading spinner, hide main section
+    // $(".connecting-loader").css({'display':'block'});
+    // $('section').css({'filter': 'blur(58px)', '-webkit-filter': 'blur(58px)'});
+    var pre_gender = $('input[name="pre-gender"]:checked').val();
+    var pre_age_from = parseInt($(".noUi-handle.noUi-handle-lower").text());
+    var pre_age_to = parseInt($(".noUi-handle.noUi-handle-upper").text());
+    let data = {
+      pre_gender: pre_gender,
+      pre_age_from: pre_age_from,
+      pre_age_to: pre_age_to
+    }
+    socket.emit('ON_CHNAGE_FILTER', data);
+  });
+  // Find the next user
+  $(document).on('click', '#nextuser', function (e) {
+    // Show loading spinner, hide main section
+    $(".connecting-loader").css({'display':'block'});
+    $('section').css({'filter': 'blur(58px)', '-webkit-filter': 'blur(58px)'});
     
+    socket.emit('ON_NEXT_PAIR');
+  });
+
+  socket.on("CONNECTION_ACCEPTED", () => {
+    console.log("connected to server");
     // Send socket connection request,
     socket.emit('ON_CONFIRM_NAME', user_data);
   });
@@ -62,20 +87,26 @@ $(function() {
   // On paired
   socket.on("ON_PAIRED", (data) => {
       console.log("ON_PAIRED", data);
+      $('.send-btn').attr('disabled', false);
+      $('.send-btn').css('color', '#1dc4e9');
+      $('.send-btn').css('pointer-events', 'default');
       $(".connecting-loader").css({'display':'none'});
       $('section').css({'filter': '', '-webkit-filter': ''});
       $('.chat-history ul').html('');
       this.$paired = true;
       Swal.fire(
         'Success!',
-        'You have a new pair ' + data.username + '! You can start chating now!',
+        'You have a new user ' + data.username + '! You can start chating now!',
         'success'
       )
   });
   // On Pair Failed
   socket.on("ON_PAIRFAILED", (data) => {
       console.log("ON_PAIRFAILED", data);
-      alert("Sorry, We can't find the pair!Please Change the filter and try again!");
+      $('.send-btn').attr('disabled', true);
+      $('.send-btn').css('color', '#ccc');
+      $('.send-btn').css('pointer-events', 'none');
+      $('.chat-history ul').html('');
       Swal.fire(
         'Failed!',
         "Sorry, We can't find the pair!Please Change the filter and try again!",
@@ -97,9 +128,29 @@ $(function() {
   // On Done Typing Message
   socket.on("MESSAGE_DONE_TYPING", (data) => {
     console.log("Done typing");
-    chat.doneTyping();
+    chat.doneTyping();  
   });
-
+  // On Left Chat
+  socket.on("LEFT_CHAT", (data) => {
+    console.log("Left Chat");
+    Swal.fire({
+      title: 'Your partner left the conversation',
+      text: "Would you like to search another partner?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Search!'
+    }).then((result) => {
+      if (result.value) {
+        $(".connecting-loader").css({'display':'block'});
+        $('section').css({'filter': 'blur(58px)', '-webkit-filter': 'blur(58px)'});
+        
+        socket.emit('ON_NEXT_PAIR');
+      }
+    })
+  });
+  
   var chat = {
     messageToSend: '',
     init: function() {
@@ -149,7 +200,9 @@ $(function() {
       this.$typing = false;
     },
     sendMessage: function() {
-      console.log("aaa");
+      console.log("aaa", $('.send-btn').attr('disabled'));
+      if ($('.send-btn').attr('disabled') == 'disabled')
+        return false;
       console.log(this.$paired);
       this.messageToSend = this.$textinput[0].emojioneArea.getText();
       if (this.messageToSend.trim() !== '') {

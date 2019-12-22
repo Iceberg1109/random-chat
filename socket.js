@@ -22,12 +22,18 @@ SocketServer = function(http) {
         socket.on(CMD.ON_CONFIRM_NAME, (data) => {
             ChatController.OnConfirmJoin(socket, data);
         });
-
         // On Guest Find his pair
         socket.on(CMD.ON_FIND_PAIR, (data) => {
-            ChatController.OnCreateNewPair(socket);
+            ChatController.OnCreateNewPair(socket, "");
         })
-
+        // On Guest skip current and find another pair
+        socket.on(CMD.ON_NEXT_PAIR, (data) => {
+            ChatController.OnSkipCurrentPair(socket);
+        })
+        // On Guest skip current and find another pair
+        socket.on(CMD.ON_CHNAGE_FILTER, (data) => {
+            ChatController.OnChangeFilter(socket, data);
+        })
         // On Message Typing
         socket.on(CMD.MESSAGE_TYPING, (data) => {
             ChatController.OnTyping(socket);

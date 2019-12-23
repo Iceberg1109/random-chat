@@ -98,7 +98,7 @@ $(function() { //18.177.142.61
         var chat_list = $('.chat-history').find('ul');
         chat_list.append('<li style="display: flex;justify-content: flex-end;margin-top: 10px;"><div class="message me">' + newImage.outerHTML + '</div></li>');
         
-        $('.chat-history').scrollTop($('.chat-history')[0].scrollHeight);
+        $('.chat-history').scrollTop($('.chat-history')[0].scrollHeight + 500);
 
         socket.emit('ON_NEW_MESSAGE', { 
           msg: null,               // Text Message Content
@@ -242,7 +242,7 @@ $(function() { //18.177.142.61
         var chat_list = $('.chat-history').find('ul');
         chat_list.append('<li style="display: flex;margin-top: 10px;"><div class="message">' + newImage.outerHTML + '</div></li>');
         
-        $('.chat-history').scrollTop($('.chat-history')[0].scrollHeight);
+        $('.chat-history').scrollTop($('.chat-history')[0].scrollHeight + 500);
       }      
       
     },
@@ -296,7 +296,7 @@ $(function() { //18.177.142.61
       $("#img-file").click();
     },
     scrollToBottom: function() {
-      this.$chatHistory.scrollTop(this.$chatHistory[0].scrollHeight);
+      this.$chatHistory.scrollTop(this.$chatHistory[0].scrollHeight + 500);
     },
   };
   

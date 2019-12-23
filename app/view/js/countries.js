@@ -260,14 +260,14 @@ s_a[251]="Central|Copperbelt|Eastern|Luapula|Lusaka|North-Western|Northern|South
 s_a[252]="Bulawayo|Harare|ManicalandMashonaland Central|Mashonaland East|Mashonaland West|Masvingo|Matabeleland North|Matabeleland South|Midlands";
 
 
-function populateStates( countryElementId, stateElementId ){
+function populateStates( countryElementId, stateElementId, firstStateOption ){
 	
 	var selectedCountryIndex = document.getElementById( countryElementId ).selectedIndex;
 
 	var stateElement = document.getElementById( stateElementId );
 	
 	stateElement.length=0;	// Fixed by Julian Woods
-	stateElement.options[0] = new Option('Select State','');
+	stateElement.options[0] = new Option(firstStateOption,'');
 	stateElement.selectedIndex = 0;
 	
 	var state_arr = s_a[selectedCountryIndex].split("|");
@@ -275,13 +275,16 @@ function populateStates( countryElementId, stateElementId ){
 	for (var i=0; i<state_arr.length; i++) {
 		stateElement.options[stateElement.length] = new Option(state_arr[i],state_arr[i]);
 	}
+	stateElement.onchange = function() {
+		stateElement.style.color = "#000";
+	};
 }
 
-function populateCountries(countryElementId, stateElementId){
+function populateCountries(countryElementId, stateElementId, firstCountryOption, firstStateOption){
 	// given the id of the <select> tag as function argument, it inserts <option> tags
 	var countryElement = document.getElementById(countryElementId);
 	countryElement.length=0;
-	countryElement.options[0] = new Option('Select Country','-1');
+	countryElement.options[0] = new Option(firstCountryOption,'-1');
 	countryElement.selectedIndex = 0;
 	for (var i=0; i<country_arr.length; i++) {
 		countryElement.options[countryElement.length] = new Option(country_arr[i],country_arr[i]);
@@ -290,8 +293,9 @@ function populateCountries(countryElementId, stateElementId){
 	// Assigned all countries. Now assign event listener for the states.
 
 	if( stateElementId ){
-		countryElement.onchange = function(){
-			populateStates( countryElementId, stateElementId );
+		countryElement.onchange = function() {
+			countryElement.style.color = "#000";
+			populateStates( countryElementId, stateElementId, firstStateOption );
 		};
 	}
 }

@@ -28,7 +28,7 @@ SocketServer = function(http) {
         })
         // On Guest skip current and find another pair
         socket.on(CMD.ON_NEXT_PAIR, (data) => {
-            ChatController.OnSkipCurrentPair(socket);
+            ChatController.OnNextPair(socket, data, true);
         })
         // On Guest skip current and find another pair
         socket.on(CMD.ON_CHNAGE_FILTER, (data) => {

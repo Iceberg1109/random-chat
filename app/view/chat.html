@@ -20,19 +20,19 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body style="height: 100vh;">
+<body style="height: 100vh;background: #8cb4fd;">
 
 <!-- Start your project here-->  
 
   <!--Section: Contact v.2-->
-  <section class="col-sm-12 col-md-8 m-auto p-0" style="margin-top: 5vh!important;">
+  <section class="col-sm-12 col-md-8 m-auto p-0" style="margin-top: 3vh!important;">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-sm" style="background-color: #e0f5fe;">
+    <nav class="navbar navbar-expand-sm bg-white">
       <!-- Links -->
       <ul class="navbar-nav">
         
         <li class="nav-item dropdown" id="filter">
-          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="filter-dropdown" data-toggle="dropdown">
             <i class="fas fa-sliders-h" style="font-size: 1.6em;"></i>
           </a>
           <div class="dropdown-menu">
@@ -60,12 +60,12 @@
               <div class="ml-3">
                 <div class="custom-control custom-radio custom-control-inline mr-3">
                   <input type="radio" class="custom-control-input" id="male" value="male" name="pre-gender" checked>
-                  <label class="custom-control-label" for="me-male">Male</label>
+                  <label class="custom-control-label" for="male">Male</label>
                 </div>
       
                 <div class="custom-control custom-radio custom-control-inline mr-5">
-                  <input type="radio" class="custom-control-input" id="me-female" value="female" name="pre-gender">
-                  <label class="custom-control-label" for="me-female">Female</label>
+                  <input type="radio" class="custom-control-input" id="female" value="female" name="pre-gender">
+                  <label class="custom-control-label" for="female">Female</label>
                 </div>
               </div>
             </a>
@@ -84,7 +84,7 @@
                     <div class="md-form mb-0">
                         <!-- <input type="text" id="state" name="state" class="form-control" required> -->
                         <select name="state" class="form-control" id ="state" required>
-                          <option>Select State</option>
+                          <option>Anywhere</option>
                         </select>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="report-dropdown" data-toggle="dropdown">
             Report
           </a>
           <div class="dropdown-menu">
@@ -115,11 +115,11 @@
       </ul>
     </nav>
     <!-- main Container -->
-    <div class="row mt-3">
+    <div class="row">
       <div class="col-sm-12">
       </div>
       <div class="col-sm-12 m-auto">
-        <div class="chat">
+        <div class="chat main-back">
           <div class="chat-history">
             <ul style="list-style-type: none;" class="pl-0">
             </ul>
@@ -127,9 +127,9 @@
           </div> <!-- end chat-history -->
           
           <div class="chat-message">
-            <i class="fas fa-file-image img-btn"></i>
             <div class="input-container">
               <input name="msg-txt" class="msg-txt" placeholder ="Type your message" rows="1" />
+              <i class="fas fa-camera img-btn"></i>
               <i class="far fa-paper-plane send-btn" disabled=true></i>
             </div>
           </div> <!-- end chat-message -->

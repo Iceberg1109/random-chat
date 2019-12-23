@@ -25,10 +25,10 @@
 <!-- Start your project here-->  
 
   <!--Section: Contact v.2-->
-  <section class="col-sm-12 col-md-4 mx-auto p-0" id="login">
+  <section class="col-sm-12 mx-auto p-0" id="login">
 
     <!--Section heading-->
-    <h2 class="h1-responsive font-weight-bold text-center">Join us</h2>
+    <h2 class="h1-responsive font-weight-bold text-center">Start Chat Now</h2>
     
     <div class="row panel">
 
@@ -40,7 +40,7 @@
           <div class="row">
 
               <!--Grid column-->
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-6">
                   <div class="md-form mb-0">
                     <input type="text" id="username" name="name" class="form-control" required>
                     <label for="name" class="">Your name</label>
@@ -49,7 +49,7 @@
               <!--Grid column-->
 
               <!--Grid column-->
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-6">
                   <div class="md-form mb-0">
                     <input type="number" id="age" name="age" class="form-control" min=1 max=99 required>
                     <label for="age" class="">Your Age</label>
@@ -62,7 +62,7 @@
           <div class="row">
 
             <!--Grid column-->
-            <div class="col-md-6">
+            <div class="col-sm-12 col-md-6">
                 <div class="md-form mb-0">
                   <!-- <input type="text" id="country" name="country" class="form-control" required> -->
                   <select id="country" class="form-control" name ="country" required></select>
@@ -71,7 +71,7 @@
             <!--Grid column-->
 
             <!--Grid column-->
-            <div class="col-md-6">
+            <div class="col-sm-12 col-md-6">
                 <div class="md-form mb-0">
                     <!-- <input type="text" id="state" name="state" class="form-control" required> -->
                     <select name="state" class="form-control" id ="state" required>
@@ -83,8 +83,8 @@
           </div>
           <!--Grid row-->
           <!--Grid row-->
-          <div class="row mt-5">
-            <div class="col-md-6 d-flex">
+          <div class="row mt-4">
+            <div class="col-sm-12 col-md-6 d-flex">
               <div class="d-flex mr-auto font-weight-bold">I am</div>
               <!-- Gender Radio -->
               <div class="custom-control custom-radio d-flex mr-3">
@@ -97,7 +97,7 @@
                 <label class="custom-control-label" for="me-female">Female</label>
               </div>
             </div>
-            <div class="col-md-6 d-flex">
+            <div class="col-sm-12 col-md-6 d-flex">
               <div class="d-flex mr-auto font-weight-bold">I prefer</div>
               <!-- Gender Radio -->
               <div class="custom-control custom-radio d-flex mr-3">
@@ -115,10 +115,10 @@
 
           <!--Grid row-->
           <div class="row mt-5">
-            <div class="col-md-5">
+            <div class="col-sm-12 col-md-5">
               <div class="d-flex mr-auto font-weight-bold" style="margin-top: -10px;">I prefer ages between</div>
             </div>
-            <div class="col-md-7">
+            <div class="col-sm-12 col-md-7">
               <div class="container">
                 <div class="row">
                   <div class="col-sm-12 p-0">
@@ -136,10 +136,34 @@
               </div>
             </div>
           </div>
+          <!--Grid row-->
+          <div class="row">
+
+            <!--Grid column-->
+            <div class="col-md-6">
+                <div class="md-form mb-0">
+                  <!-- <input type="text" id="country" name="country" class="form-control" required> -->
+                  <select id="pre_country" class="form-control" name ="pre_country" required></select>
+                </div>
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-md-6">
+                <div class="md-form mb-0">
+                    <!-- <input type="text" id="state" name="state" class="form-control" required> -->
+                    <select name="pre_state" class="form-control" id ="pre_state" required>
+                      <option>Anywhere</option>
+                    </select>
+                </div>
+            </div>
+            <!--Grid column-->
+          </div>
+          <!--Grid row-->
         </form>
 
         <div class="text-center mt-5" style="width: 100%;">
-          <a id="btn_join" class="btn btn-primary m-auto">Join</a>
+          <a id="btn_join" class="btn btn-primary m-auto font-weight-bold">Let's Go!</a>
         </div>
         <div class="status"></div>
       </div>
@@ -165,11 +189,12 @@
   <!-- Countries List -->
   <script type= "text/javascript" src = "js/countries.js"></script>
   <!-- Your custom scripts (optional) -->
-  <script type= "text/javascript" src = "https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+  <script type= "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
   <script type= "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/js/jquery.tooltipster.min.js"></script>
   
   <script>
-    populateCountries("country", "state");
+    populateCountries("country", "state", "Selec Country", "Selec State");
+    populateCountries("pre_country", "pre_state" ,"Anywhere", "Anywhere");
 
     $(function() {
       $('#contact-form input[type="text"]').tooltipster({ 
@@ -189,18 +214,20 @@
       });
       // Confirm Username
       $(document).on('click', '#btn_join', function(e){
+        $("#contact-form").submit();  
+      });
+
+      $("#contact-form").submit(function(e) {
         e.preventDefault();
         e.stopPropagation();
         console.log('aaa');
         jQuery.validator.addMethod("checkCountry", function(value, element) {
-          console.log('cccc');
-          if ($("#country")[0].selectedIndex == 0)
+          if ($(element)[0].selectedIndex == 0)
             return false;
           return true;
         }, "* Please select the country");
         jQuery.validator.addMethod("checkState", function(value, element) {
-          console.log('sssss');
-          if ($("#state")[0].selectedIndex == 0)
+          if ($(element)[0].selectedIndex == 0)
             return false;
           return true;
         }, "* Please select the state");
@@ -208,7 +235,7 @@
         $("#contact-form").validate({
           rules: {
             country: {checkCountry: true},
-            state: { checkState: true}
+            state: { checkState: true},
           },
           errorPlacement: function (error, element) {
             $(element).tooltipster('update', $(error).text());
@@ -216,48 +243,38 @@
           },
           success: function (label, element) {
             $(element).tooltipster('hide');
-          
-            console.log('valid');
-            var name = $('#username').val();
-            var age = $('#age').val();
-            var gender = $('input[name="me-gender"]:checked').val();
-            var pre_gender = $('input[name="prefer-gender"]:checked').val();
-            var pre_age_from = parseInt($(".noUi-handle.noUi-handle-lower").text());
-            var pre_age_to = parseInt($(".noUi-handle.noUi-handle-upper").text());
-            var country = $('#country').val();
-            var state = $('#state').val();
-            var confirmBtn = $('#btn_join');
-            var send = $('#send_message');
-            var find_pair = $("#find_pair");
-            var chatting_history = $("#chatting_history");
-            
-            let user_data = {
-              name: name,
-              age: age,
-              gender: gender,
-              pre_gender: pre_gender,
-              pre_age_from: pre_age_from,
-              pre_age_to: pre_age_to,
-              country: country,
-              state: state
-            }
-
-            sessionStorage.setItem("user_data", JSON.stringify(user_data));
-            location.href = "/chat";
           }
         });
-        $("#contact-form").valid();
-        // var form = $("#contact-form")
 
-        // if (form[0].checkValidity() === false) {
-        //   event.preventDefault();
-        //   event.stopPropagation();
-        //   $('.noUi-handle').css({'background': '#34ce57'});
-        // }
-        // else {
+        if ($("#contact-form").valid()) {
+          var name = $('#username').val();
+          var age = $('#age').val();
+          var gender = $('input[name="me-gender"]:checked').val();
+          var country = $('#country').val();
+          var state = $('#state').val();
+          var pre_gender = $('input[name="prefer-gender"]:checked').val();
+          var pre_age_from = parseInt($(".noUi-handle.noUi-handle-lower").text());
+          var pre_age_to = parseInt($(".noUi-handle.noUi-handle-upper").text());
+          var pre_country = $('#pre_country').find(":selected").text();
+          var pre_state = $('#pre_state').find(":selected").text();
           
-        // }
-        // form.addClass('was-validated');
+          let user_data = {
+            name: name,
+            age: age,
+            gender: gender,
+            country: country,
+            state: state,
+            pre_gender: pre_gender,
+            pre_age_from: pre_age_from,
+            pre_age_to: pre_age_to,
+            pre_country: pre_country,
+            pre_state: pre_state,
+          }
+
+          console.log(user_data);
+          sessionStorage.setItem("user_data", JSON.stringify(user_data));
+          location.href = "/chat";
+        }
       })
   });
   </script>

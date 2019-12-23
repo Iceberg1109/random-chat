@@ -21,7 +21,7 @@ $(function() { //18.177.142.61
     }
   });
   let user_data = JSON.parse(sessionStorage.user_data);
-  
+  var bTyping = false;
   $(document).ready(function() {
     // Show loading spinner, hide main section
     $(".connecting-loader").css({'display':'block'});
@@ -32,15 +32,18 @@ $(function() { //18.177.142.61
       filtersPosition: "bottom",
       events: {
         keyup: function (editor, event) {
-          console.log(editor.text());
-          if (editor.text()) {
+          console.log(bTyping);
+          if (editor.text() && bTyping == false) {
             // enter was pressed
             socket.emit('MESSAGE_TYPING');
+            bTyping = true;
           }
-          else {
+          else if (editor.text() == ""){
             socket.emit('MESSAGE_DONE_TYPING');
+            bTyping = false;
           }
           if (event.keyCode === 13) {
+            bTyping = false;
             chat.sendMessage();
           }
         },
@@ -162,7 +165,6 @@ $(function() { //18.177.142.61
   // On Receive New Message
   socket.on("NEW_MESSAGE", (data) => {
     console.log("ON NEW MESSAGE", data);
-    chat.doneTyping();
     chat.addResponseMsg(data);
   });
   // On Typing Message
@@ -222,17 +224,19 @@ $(function() { //18.177.142.61
       this.$img_button.on('click', this.sendImg.bind(this));
     },
     addResponseMsg: function(data) {
-      this.doneTyping();
+      $('.typing').remove();
+      this.$typing = false;
+      console.log($('.typing').length);
       // responses
       if (data.img == null) {
         var templateResponse = Handlebars.compile( $("#message-response-template").html());
         var contextResponse = { 
           response: data.msg
         };
-        setTimeout(function() {
+        // setTimeout(function() {
           this.$chatHistoryList.append(templateResponse(contextResponse));
           this.scrollToBottom();
-        }.bind(this), 400);
+        // }.bind(this), 400);
       }
       else {
         var img_src = data.img;
@@ -245,7 +249,6 @@ $(function() { //18.177.142.61
         
         chat.scrollToBottom();
       }      
-      
     },
     addTyping: function() {
       // responses
@@ -253,10 +256,9 @@ $(function() { //18.177.142.61
       if (this.$typing == false) {
         var templateResponse = Handlebars.compile( $("#message-response-typing").html());
         
-        setTimeout(function() {
-          this.$chatHistoryList.append(templateResponse());
-          this.scrollToBottom();
-        }.bind(this), 400);
+        this.$chatHistoryList.append(templateResponse());
+        this.scrollToBottom();
+
         this.$typing = true;
       }
     },
@@ -297,7 +299,10 @@ $(function() { //18.177.142.61
       $("#img-file").click();
     },
     scrollToBottom: function() {
-      this.$chatHistory.scrollTop(this.$chatHistory[0].scrollHeight + 500);
+      // this.$chatHistory.scrollTop(this.$chatHistory[0].scrollHeight + 500);
+      this.$chatHistory.animate({
+        scrollTop: this.$chatHistory[0].scrollHeight + 500,
+      }, 200);
     },
   };
   

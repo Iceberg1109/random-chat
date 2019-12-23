@@ -207,6 +207,7 @@ module.exports = {
                     msg: text,
                     img: image,
                 });
+                
                 snd_flag = true;
                 break;
             } else if(element.s.id ==  sender.id) {
@@ -221,7 +222,7 @@ module.exports = {
         sender.emit("MESSAGE_SENT", {flag: snd_flag});
     },
     OnTyping: function(sender) {
-        // console.log("typing");
+        console.log("typing");
         // pairs.forEach(element => {
         for(let element of pairs) {
             if(element.f.id == sender.id){

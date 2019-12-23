@@ -14,8 +14,8 @@ $(document).on('click', '.dropdown-menu', function (e) {
   e.stopPropagation();
 });
 
-$(function() {
-  let socket = io.connect('http://18.177.142.61:8000', {
+$(function() { //18.177.142.61
+  let socket = io.connect('http://localhost:8000', {
     query : {
       user_type:"guest"
     }
@@ -98,7 +98,7 @@ $(function() {
         var chat_list = $('.chat-history').find('ul');
         chat_list.append('<li style="display: flex;justify-content: flex-end;margin-top: 10px;"><div class="message me">' + newImage.outerHTML + '</div></li>');
         
-        chat_list.scrollTop(chat_list[0].scrollHeight);
+        $('.chat-history').scrollTop($('.chat-history')[0].scrollHeight);
 
         socket.emit('ON_NEW_MESSAGE', { 
           msg: null,               // Text Message Content
@@ -242,7 +242,7 @@ $(function() {
         var chat_list = $('.chat-history').find('ul');
         chat_list.append('<li style="display: flex;margin-top: 10px;"><div class="message">' + newImage.outerHTML + '</div></li>');
         
-        chat_list.scrollTop(this.$chatHistory[0].scrollHeight);
+        $('.chat-history').scrollTop($('.chat-history')[0].scrollHeight);
       }      
       
     },

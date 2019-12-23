@@ -137,7 +137,7 @@ $(function() {
   socket.on("NEW_MESSAGE", (data) => {
     console.log("ON NEW MESSAGE", data);
     chat.doneTyping();
-    chat.addResponseMsg(data.msg);
+    chat.addResponseMsg(data);
   });
   // On Typing Message
   socket.on("MESSAGE_TYPING", (data) => {
@@ -193,15 +193,22 @@ $(function() {
     bindEvents: function() {
       this.$button.on('click', this.sendMessage.bind(this));
     },
-    addResponseMsg: function(msg) {
+    addResponseMsg: function(data) {
       this.doneTyping();
       // responses
-      var templateResponse = Handlebars.compile( $("#message-response-template").html());
-      var contextResponse = { 
-        response: msg
-        // name: "Receiver"
-      };
-      
+      if (data.img == null) {
+        var templateResponse = Handlebars.compile( $("#message-response-template").html());
+        var contextResponse = { 
+          response: data.msg
+        };
+      }
+      else {
+        var img_src = 'data:image/jpeg;base64,' + data.img;
+        var templateResponse = Handlebars.compile( $("#message-response-img-template").html());
+        var contextResponse = { 
+          src: img_src
+        };
+      }      
       setTimeout(function() {
         this.$chatHistoryList.append(templateResponse(contextResponse));
         this.scrollToBottom();
@@ -245,7 +252,7 @@ $(function() {
         socket.emit('ON_NEW_MESSAGE', { 
           msg: this.messageToSend,    // Text Message Content
           img: null,                  // Message Image URL
-          vid: null                   // Message Video URL
+          // isImg: false                // Message Video URL
         });
       }
       // this.render();

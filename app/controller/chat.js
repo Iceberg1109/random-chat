@@ -197,7 +197,7 @@ module.exports = {
         this.OnNextPair(socket, data, false);
     },
     // If user send a new message
-    OnNewMessage: function(sender, text, image, video) {  //sender stands for (sender)socket
+    OnNewMessage: function(sender, text, image) {  //sender stands for (sender)socket
         var snd_flag = false;
         // pairs.forEach(element => {
         for(let element of pairs) {
@@ -206,7 +206,6 @@ module.exports = {
                     sender: sender.username,
                     msg: text,
                     img: image,
-                    vid: video
                 });
                 snd_flag = true;
                 break;
@@ -215,7 +214,6 @@ module.exports = {
                     sender: sender.username,
                     msg: text,
                     img: image,
-                    vid: video
                 });
                 snd_flag = true;
                 break;
@@ -259,8 +257,10 @@ module.exports = {
         var ind = 0;
         // m_sockets.forEach(element => {
         for(let element of m_sockets) {
-            if(element.id == socket.id)
+            if(element.id == socket.id) {
+                found = true;
                 break;
+            }
             ind ++;
         };
         console.log("found? ", found, "ind ", ind);

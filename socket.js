@@ -15,7 +15,7 @@ SocketServer = function(http) {
          * data = {msg: MESSAGE TEXT, img: IMAGE URL, vid: VIDEO URL}
          */
         socket.on(CMD.ON_NEW_MESSAGE, (data) => {
-            ChatController.OnNewMessage(socket, data.msg, data.img, data.vid);
+            ChatController.OnNewMessage(socket, data.msg, data.img);
         });
 
         // On guest confirm username

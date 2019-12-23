@@ -198,12 +198,12 @@ module.exports = {
     },
     // If user send a new message
     OnNewMessage: function(sender, text, image) {  //sender stands for (sender)socket
+        console.log("New Message", image == null);
         var snd_flag = false;
         // pairs.forEach(element => {
         for(let element of pairs) {
             if(element.f.id == sender.id){
                 element.s.emit("NEW_MESSAGE", {
-                    sender: sender.username,
                     msg: text,
                     img: image,
                 });
@@ -211,7 +211,6 @@ module.exports = {
                 break;
             } else if(element.s.id ==  sender.id) {
                 element.f.emit("NEW_MESSAGE", {
-                    sender: sender.username,
                     msg: text,
                     img: image,
                 });

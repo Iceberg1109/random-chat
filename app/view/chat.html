@@ -130,6 +130,7 @@
             <div class="input-container">
               <input name="msg-txt" class="msg-txt" placeholder ="Type your message" rows="1" />
               <i class="fas fa-camera img-btn"></i>
+              <input type="file" id="img-file" style="display:none">
               <i class="far fa-paper-plane send-btn" disabled=true></i>
             </div>
           </div> <!-- end chat-message -->
@@ -152,14 +153,6 @@
     <li style="display: flex;margin-top: 10px;">
       <div class="message">
         {{response}}
-      </div>
-    </li>
-  </script>
-
-  <script id="message-response-img-template" type="text/x-handlebars-template">
-    <li style="display: flex;margin-top: 10px;">
-      <div class="message">
-        <img src={{src}}/>
       </div>
     </li>
   </script>

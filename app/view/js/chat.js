@@ -15,7 +15,6 @@ $(document).on('click', '.dropdown-menu', function (e) {
 });
 
 $(function() {
-  this.$paired = false;
   let socket = io.connect('http://localhost:8000', {
     query : {
       user_type:"guest"
@@ -83,7 +82,34 @@ $(function() {
     else
       socket.emit('ON_NEXT_PAIR', {paired: true});
   });
+  $(document).on('change', '#img-file', function (e) {
+    console.log("file1", this.files);
+    if (this.files && this.files[0]) {
+      console.log("file2", this.files[0]);
+      var myFile = this.files[0];
+      var reader = new FileReader();
+      
+      reader.onload = function (e) {
+        var img_src = e.target.result;
+        // console.log(img_src);
+        var newImage = document.createElement('img');
+        newImage.src = img_src;
+        
+        var chat_list = $('.chat-history').find('ul');
+        chat_list.append('<li style="display: flex;justify-content: flex-end;margin-top: 10px;"><div class="message me">' + newImage.outerHTML + '</div></li>');
+        
+        chat_list.scrollTop(chat_list[0].scrollHeight);
 
+        socket.emit('ON_NEW_MESSAGE', { 
+          msg: null,               // Text Message Content
+          img: img_src,  // Message Image URL
+        });
+        console.log("emit");
+      }
+      
+      reader.readAsDataURL(myFile);
+    }
+  });
   socket.on("CONNECTION_ACCEPTED", () => {
     console.log("connected to server");
     // Send socket connection request,
@@ -108,7 +134,6 @@ $(function() {
       $(".connecting-loader").css({'display':'none'});
       $('section').css({'filter': '', '-webkit-filter': ''});
       $('.chat-history ul').html('');
-      this.$paired = true;
       Swal.fire(
         'Success!',
         'You have a new user ' + data.username + '! You can start chating now!',
@@ -185,13 +210,15 @@ $(function() {
     },
     cacheDOM: function() {
       this.$chatHistory = $('.chat-history');
-      this.$button = $('.send-btn');
+      this.$img_button = $('.img-btn');
+      this.$send_button = $('.send-btn');
       this.$textinput = $('.msg-txt');
       this.$chatHistoryList =  this.$chatHistory.find('ul');
       this.$typing = false;
     },
     bindEvents: function() {
-      this.$button.on('click', this.sendMessage.bind(this));
+      this.$send_button.on('click', this.sendMessage.bind(this));
+      this.$img_button.on('click', this.sendImg.bind(this));
     },
     addResponseMsg: function(data) {
       this.doneTyping();
@@ -201,18 +228,23 @@ $(function() {
         var contextResponse = { 
           response: data.msg
         };
+        setTimeout(function() {
+          this.$chatHistoryList.append(templateResponse(contextResponse));
+          this.scrollToBottom();
+        }.bind(this), 400);
       }
       else {
-        var img_src = 'data:image/jpeg;base64,' + data.img;
-        var templateResponse = Handlebars.compile( $("#message-response-img-template").html());
-        var contextResponse = { 
-          src: img_src
-        };
+        var img_src = data.img;
+        // console.log(img_src);
+        var newImage = document.createElement('img');
+        newImage.src = img_src;
+        
+        var chat_list = $('.chat-history').find('ul');
+        chat_list.append('<li style="display: flex;margin-top: 10px;"><div class="message">' + newImage.outerHTML + '</div></li>');
+        
+        chat_list.scrollTop(this.$chatHistory[0].scrollHeight);
       }      
-      setTimeout(function() {
-        this.$chatHistoryList.append(templateResponse(contextResponse));
-        this.scrollToBottom();
-      }.bind(this), 400);
+      
     },
     addTyping: function() {
       // responses
@@ -236,7 +268,7 @@ $(function() {
       console.log("aaa", $('.send-btn').attr('disabled'));
       if ($('.send-btn').attr('disabled') == 'disabled')
         return false;
-      console.log(this.$paired);
+      
       this.messageToSend = this.$textinput[0].emojioneArea.getText();
       if (this.messageToSend.trim() !== '') {
         var template = Handlebars.compile( $("#message-template").html());
@@ -256,6 +288,12 @@ $(function() {
         });
       }
       // this.render();
+    },
+    sendImg: function() {
+      console.log("aaa", $('.send-btn').attr('disabled'));
+      if ($('.send-btn').attr('disabled') == 'disabled')
+        return false;
+      $("#img-file").click();
     },
     scrollToBottom: function() {
       this.$chatHistory.scrollTop(this.$chatHistory[0].scrollHeight);

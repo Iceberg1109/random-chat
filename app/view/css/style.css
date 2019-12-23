@@ -129,7 +129,9 @@
     -o-transition: all .3s;
     transition: all .3s;
   }
-
+  .chat-history .message img {
+    max-width: 300px;
+  }
   .chat .chat-message {
     padding: 30px 20px 30px 50px;
     position: relative;

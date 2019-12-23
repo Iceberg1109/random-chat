@@ -131,13 +131,11 @@
   }
   .chat-history .message img {
     max-width: 150px;
-    padding: .25rem;
-    border-radius: .25rem;
+    padding: .5rem;
+    border-radius: .5rem;
     background-color: #dee2e6;
   }
-  .chat-history .me img{
-    /* background-color: #fff!important; */
-  }
+
   .chat .chat-message {
     padding: 30px 20px 30px 50px;
     position: relative;

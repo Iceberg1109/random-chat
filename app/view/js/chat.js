@@ -114,6 +114,12 @@ $(function() { //18.177.142.61
       $('#img-file').val('');
     }
   });
+  $(document).on('click', '.message img', function (e) {
+    console.log("img click", $(this).attr("src"));
+    $img = $(this).attr("src");
+    $('#myModal img').attr('src', $img);
+    $('#myModal').modal('toggle');
+  });
   socket.on("CONNECTION_ACCEPTED", () => {
     console.log("connected to server");
     // Send socket connection request,

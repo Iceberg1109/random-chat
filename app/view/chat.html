@@ -23,9 +23,17 @@
 <body style="height: 100vh;background: #8cb4fd;">
 
 <!-- Start your project here-->  
-
+<div style="height: 100%;widows: 100%;position: relative;">
   <!--Section: Contact v.2-->
-  <section class="col-sm-12 col-md-8 m-auto p-0" style="margin-top: 3vh!important;">
+  <div class="m-auto" style="
+  position: absolute;
+  width: 100%;
+  /* transform: translateY(-50%); */
+  top:  50%;
+  max-width: 1300px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-sm bg-white">
       <!-- Links -->
@@ -115,10 +123,10 @@
       </ul>
     </nav>
     <!-- main Container -->
-    <div class="row">
-      <div class="col-sm-12">
+    <div>
+      <div style="width: 100%;">
       </div>
-      <div class="col-sm-12 m-auto">
+      <div class="m-auto" style="width: 100%;">
         <div class="chat main-back">
           <div class="chat-history">
             <ul style="list-style-type: none;" class="pl-0">
@@ -137,8 +145,8 @@
         </div>
       </div>
     </div>
-  </section>
-  
+  </div>
+</div>  
   <div class="loader connecting-loader">Loading...</div>
   <!-- Modal -->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

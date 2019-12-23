@@ -130,7 +130,13 @@
     transition: all .3s;
   }
   .chat-history .message img {
-    max-width: 300px;
+    max-width: 150px;
+    padding: .25rem;
+    border-radius: .25rem;
+    background-color: #dee2e6;
+  }
+  .chat-history .me img{
+    /* background-color: #fff!important; */
   }
   .chat .chat-message {
     padding: 30px 20px 30px 50px;

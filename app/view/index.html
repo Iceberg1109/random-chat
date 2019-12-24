@@ -32,61 +32,55 @@
     
     <div class="row panel">
 
-        <!--Grid column-->
+      <!-- Login Form -->
       <div class="col-md-12 mb-md-0 mb-5">
         <form id="contact-form">
 
-          <!--Grid row-->
+          <!-- User Name and Age -->
           <div class="row">
 
-              <!--Grid column-->
+              <!-- User Name -->
               <div class="col-sm-12 col-md-6">
                   <div class="md-form mb-0">
                     <input type="text" id="username" name="name" class="form-control" required>
                     <label for="name" class="">Your name</label>
                   </div>
               </div>
-              <!--Grid column-->
 
-              <!--Grid column-->
+              <!-- User Age -->
               <div class="col-sm-12 col-md-6">
                   <div class="md-form mb-0">
                     <input type="number" id="age" name="age" class="form-control" min=1 max=99 required>
                     <label for="age" class="">Your Age</label>
                   </div>
               </div>
-              <!--Grid column-->
-
           </div>
-          <!--Grid row-->
+
+          <!-- User Location -->
           <div class="row">
 
-            <!--Grid column-->
+            <!-- User Country -->
             <div class="col-sm-12 col-md-6">
                 <div class="md-form mb-0">
-                  <!-- <input type="text" id="country" name="country" class="form-control" required> -->
                   <select id="country" class="form-control" name ="country" required></select>
                 </div>
             </div>
-            <!--Grid column-->
 
-            <!--Grid column-->
+            <!-- User State -->
             <div class="col-sm-12 col-md-6">
                 <div class="md-form mb-0">
-                    <!-- <input type="text" id="state" name="state" class="form-control" required> -->
                     <select name="state" class="form-control" id ="state" required>
                       <option>Select State</option>
                     </select>
                 </div>
             </div>
-            <!--Grid column-->
           </div>
-          <!--Grid row-->
-          <!--Grid row-->
+
+          <!-- User Gender -->
           <div class="row mt-4">
             <div class="col-sm-12 col-md-6 d-flex">
               <div class="d-flex mr-auto font-weight-bold">I am</div>
-              <!-- Gender Radio -->
+              <!-- Gender Radios -->
               <div class="custom-control custom-radio d-flex mr-3">
                 <input type="radio" class="custom-control-input" id="me-male" value="male" name="me-gender" checked>
                 <label class="custom-control-label" for="me-male">Male</label>
@@ -97,69 +91,7 @@
                 <label class="custom-control-label" for="me-female">Female</label>
               </div>
             </div>
-            <div class="col-sm-12 col-md-6 d-flex">
-              <div class="d-flex mr-auto font-weight-bold">I prefer</div>
-              <!-- Gender Radio -->
-              <div class="custom-control custom-radio d-flex mr-3">
-                <input type="radio" class="custom-control-input" id="prefer-male" value="male" name="prefer-gender" checked>
-                <label class="custom-control-label" for="prefer-male">Male</label>
-              </div>
-
-              <div class="custom-control custom-radio d-flex mr-5">
-                <input type="radio" class="custom-control-input" id="prefer-female" value="female" name="prefer-gender">
-                <label class="custom-control-label" for="prefer-female">Female</label>
-              </div>
-            </div>
           </div>
-          <!--Grid row-->
-
-          <!--Grid row-->
-          <div class="row mt-5">
-            <div class="col-sm-12 col-md-5">
-              <div class="d-flex mr-auto font-weight-bold" style="margin-top: -10px;">I prefer ages between</div>
-            </div>
-            <div class="col-sm-12 col-md-7">
-              <div class="container">
-                <div class="row">
-                  <div class="col-sm-12 p-0">
-                    <div id="slider-range"></div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div>
-                      <input type="hidden" name="min-value" value="">
-                      <input type="hidden" name="max-value" value="">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--Grid row-->
-          <div class="row">
-
-            <!--Grid column-->
-            <div class="col-md-6">
-                <div class="md-form mb-0">
-                  <!-- <input type="text" id="country" name="country" class="form-control" required> -->
-                  <select id="pre_country" class="form-control" name ="pre_country" required></select>
-                </div>
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-md-6">
-                <div class="md-form mb-0">
-                    <!-- <input type="text" id="state" name="state" class="form-control" required> -->
-                    <select name="pre_state" class="form-control" id ="pre_state" required>
-                      <option>Anywhere</option>
-                    </select>
-                </div>
-            </div>
-            <!--Grid column-->
-          </div>
-          <!--Grid row-->
         </form>
 
         <div class="text-center mt-5" style="width: 100%;">
@@ -167,8 +99,6 @@
         </div>
         <div class="status"></div>
       </div>
-        <!--Grid column-->
-        
     </div>
   </section>
 
@@ -194,7 +124,6 @@
   
   <script>
     populateCountries("country", "state", "Selec Country", "Selec State");
-    populateCountries("pre_country", "pre_state" ,"Anywhere", "Anywhere");
 
     $(function() {
       $('#contact-form input[type="text"]').tooltipster({ 
@@ -252,11 +181,6 @@
           var gender = $('input[name="me-gender"]:checked').val();
           var country = $('#country').val();
           var state = $('#state').val();
-          var pre_gender = $('input[name="prefer-gender"]:checked').val();
-          var pre_age_from = parseInt($(".noUi-handle.noUi-handle-lower").text());
-          var pre_age_to = parseInt($(".noUi-handle.noUi-handle-upper").text());
-          var pre_country = $('#pre_country').find(":selected").text();
-          var pre_state = $('#pre_state').find(":selected").text();
           
           let user_data = {
             name: name,

@@ -144,11 +144,11 @@ $(function() { //18.177.142.61
       $(".connecting-loader").css({'display':'none'});
       $('section').css({'filter': '', '-webkit-filter': ''});
       $('.chat-history ul').html('');
-      Swal.fire(
-        'Success!',
-        'You have a new user ' + data.username + '! You can start chating now!',
-        'success'
-      )
+
+      $('.alert-danger').css('display', 'none');
+      $('.alert-success').css('display', 'block');
+      $('.alert-success').text('You have successfully connected with ' + data.username + '! You can start chatting now.')
+      $('.status-msg').text('Connected');
   });
   // On Pair Failed
   socket.on("ON_PAIRFAILED", (data) => {
@@ -160,11 +160,11 @@ $(function() { //18.177.142.61
       $('.send-btn').css('color', '#ccc');
       $('.send-btn').css('pointer-events', 'none');
       $('.chat-history ul').html('');
-      Swal.fire(
-        'Failed!',
-        "Sorry, We can't find the pair!Please Change the filter and try again!",
-        'error'
-      )
+      
+      $('.alert-danger').css('display', 'block');
+      $('.alert-success').css('display', 'none');
+      $('.status-msg').text('Disconnected');
+
       $(".connecting-loader").css({'display':'none'});
       $('section').css({'filter': '', '-webkit-filter': ''});
   });
@@ -186,29 +186,11 @@ $(function() { //18.177.142.61
   // On Left Chat
   socket.on("LEFT_CHAT", (data) => {
     console.log("Left Chat");
-    Swal.fire({
-      title: 'Your partner left the conversation',
-      text: "Would you like to search another partner?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Search!'
-    }).then((result) => {
-      console.log(result);
-      if (result.value) {
-        $(".connecting-loader").css({'display':'block'});
-        $('section').css({'filter': 'blur(58px)', '-webkit-filter': 'blur(58px)'});
-        
-        socket.emit('ON_FIND_PAIR');
-      }
-      if (result.dismiss != "") {
-        $('.send-btn').attr('disabled', true);
-        $('.send-btn').css('color', '#ccc');
-        $('.send-btn').css('pointer-events', 'none');
-        $('.chat-history ul').html('');
-      }
-    })
+    $('.alert-danger').css('display', 'block');
+    $('.alert-success').css('display', 'none');
+    $('.status-msg').text('Disconnected');
+
+    $('.chat-history ul').html('');
   });
   
   var chat = {

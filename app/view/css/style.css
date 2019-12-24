@@ -11,13 +11,27 @@
   .main-back {
     background: #eaedf2!important;
   }
-/* Login page */
-  #login {
-    max-width: 640px;
-    margin: auto;
+/* Align Center */  
+  body.full-screen {
+    width: 100vw;
+    height: 100vh;
   }
+  .v-center-parent {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+/* Bootstrap row */
+  .row {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+/* Login page */
   #login, #chat {
-    margin-top: 130px;
+    /* margin-top: 130px; */
     box-shadow: 2px 2px 5px #bbb;
   }
 
@@ -28,7 +42,7 @@
   }
 
   #login .panel {
-    padding: 20px 50px 30px;
+    padding-bottom: 1.5em;
   }
 
   a.btn-primary {
@@ -53,9 +67,10 @@
     background: #dc3545;
     color: white;
   }
+
 /* Chat page */
-  #filter .dropdown-menu:active{
-  }
+  /* #filter .dropdown-menu:active{
+  } */
 
   #filter .dropdown-menu .dropdown-item:active {
     background-image: none;
@@ -65,6 +80,14 @@
   #filter .dropdown-menu .dropdown-item:hover {
     background-color: transparent;
   }
+  .status-msg {
+    position: absolute;
+    margin: 0px auto;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 8px 0px;
+    left: 43%;
+  }
   /* Emoji area */
   .emojionearea.emojionearea-inline>.emojionearea-button {
     top: 5px;
@@ -73,6 +96,14 @@
   .emojionearea.emojionearea-inline>.emojionearea-editor {
     left: 35px;
     right: 40px;
+  }
+  /* Status Text*/
+  .status-txt {
+    width: 100%;
+    text-align: center;
+    font-size: 1.1em;
+    padding: 15px 0px;
+    display: none;
   }
   /* Chat history */
   .chat-history {
@@ -112,8 +143,8 @@
     max-width: 80%;
     position: relative;
     border-radius: 1rem 1rem 1rem 0rem;
-    /* box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.1); */
     display: flex;
+    word-break: break-all;
   }
   
   .chat .chat-history .me {
@@ -121,7 +152,6 @@
     background: #86BB71;
     color: white;
     border-radius: 1rem 1rem 0rem 1rem;
-    /* background: rgba(0, 0, 0, 0) linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%) repeat scroll 0 0; */
     background: #007bff;
     -webkit-transition: all .3s;
     -moz-transition: all .3s;
@@ -171,10 +201,8 @@
     font-size: 25px;
     cursor: pointer;
     font-weight: bold;
-    /* background: rgba(0, 0, 0, 0) linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%) repeat scroll 0 0; */
     border-radius: 50%;
     padding: 11px 12px 0px 9px;
-    /* margin-left: 10px; */
     margin-top: -6px;
   }
 
@@ -200,7 +228,22 @@
   .me {
     color: #94C2ED;
   }
-  
+/* Responsive */  
+  @media (max-width: 575px) {
+    .status-msg {
+      left: 37%;
+    }
+
+    .chat-history {
+      padding: 15px 15px 20px;
+    }
+
+    .chat .chat-message {
+      padding: 10px 10px 20px 10px;
+    }
+    
+  }
+/* Loading Spinner */  
   .clearfix:after {
     visibility: hidden;
     display: block;

@@ -60,7 +60,8 @@ module.exports = {
             if( element.id != me.id && element.isSearching && element.id != cur_id
                 && element.user_data.age >= me.user_data.pre_age_from
                 && element.user_data.age <= me.user_data.pre_age_to
-                && element.user_data.gender == me.user_data.pre_gender
+                && (element.user_data.gender == me.user_data.pre_gender
+                    || me.user_data.pre_gender == "Both")
                 && (element.user_data.country == me.user_data.pre_country
                     || me.user_data.pre_country == 'Anywhere')
                 && ( element.user_data.state == me.user_data.pre_state

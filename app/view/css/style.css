@@ -49,17 +49,16 @@
     width: 40%;
   }
   
-  #country, #state,
-  #pre_country, #pre_state {
+  /* #country, #state,
+  #pre_country, #pre_state, */
+  .select-ctrl
+   {
     width: 100%;
     border: none;
     border-bottom: 1px solid #ccc;
-  }
-  
-  #country, #state {
     color: #757575;
   }
-
+  
   .tooltipster-default {
     border-radius: 1px; 
     border: 1px solid #eee;
@@ -175,6 +174,7 @@
     position: relative;
     width: 100%;
     display: flex;
+    margin-top: 7px;
   }
   
   .chat-message .msg-txt {
@@ -273,7 +273,9 @@
     animation-delay: -0.16s;
   }
   .loader.typing-loader {
-    font-size: 6px;;
+    font-size: 6px;
+    margin-top: -10px;
+    margin-left: 30px;
   }
   .loader.connecting-loader {
     font-size: 26px;;

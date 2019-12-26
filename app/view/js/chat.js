@@ -1,9 +1,4 @@
 populateCountries("country", "state" ,"Anywhere", "Anywhere");
-// Save filter button
-$(document).on('click', '#save', function (e) {
-  console.log("save");
-  $("#filter .dropdown-menu").removeClass('show');
-});
 // Cancel filter button
 $(document).on('click', '#cancel', function (e) {
   $("#filter .dropdown-menu").removeClass('show');
@@ -15,7 +10,7 @@ $(document).on('click', '.dropdown-menu', function (e) {
 });
 
 $(function() { //18.177.142.61
-  let socket = io.connect('http://18.177.142.61:8000', {
+  let socket = io.connect('http://localhost:8000', {
     query : {
       user_type:"guest"
     }
@@ -52,6 +47,7 @@ $(function() { //18.177.142.61
   });
   // Change the filter
   $(document).on('click', '#save', function (e) {
+    $("#filter .dropdown-menu").removeClass('show');
     // Show loading spinner, hide main section
     // $(".connecting-loader").css({'display':'block'});
     // $('section').css({'filter': 'blur(58px)', '-webkit-filter': 'blur(58px)'});
@@ -149,6 +145,8 @@ $(function() { //18.177.142.61
       $('.alert-success').css('display', 'block');
       $('.alert-success').text('You have successfully connected with ' + data.username + '! You can start chatting now.')
       $('.status-msg').text('Connected');
+
+      $('#is-typing span').text(data.username);
   });
   // On Pair Failed
   socket.on("ON_PAIRFAILED", (data) => {
@@ -212,23 +210,23 @@ $(function() { //18.177.142.61
       this.$img_button.on('click', this.sendImg.bind(this));
     },
     addResponseMsg: function(data) {
-      $('.typing').remove();
+      chat.doneTyping();
       this.$typing = false;
-      console.log($('.typing').length);
+      console.log(data.msg);
       // responses
       if (data.img == null) {
-        var templateResponse = Handlebars.compile( $("#message-response-template").html());
-        var contextResponse = { 
-          response: data.msg
-        };
-        // setTimeout(function() {
-          this.$chatHistoryList.append(templateResponse(contextResponse));
-          this.scrollToBottom();
-        // }.bind(this), 400);
+        // var templateResponse = Handlebars.compile( $("#message-response-template").html());
+        // var contextResponse = { 
+        //   response: data.msg
+        // };
+        // console.log("res msg", templateResponse(contextResponse));
+        var new_msg = '<li style="display: flex;margin-top: 10px;"><div class="message">' + data.msg + '</div></li>';
+        this.$chatHistoryList.append(new_msg);
+        this.scrollToBottom();
       }
       else {
         var img_src = data.img;
-        // console.log(img_src);
+
         var newImage = document.createElement('img');
         newImage.src = img_src;
         
@@ -242,17 +240,13 @@ $(function() { //18.177.142.61
       // responses
       console.log(this.$typing);
       if (this.$typing == false) {
-        var templateResponse = Handlebars.compile( $("#message-response-typing").html());
-        
-        this.$chatHistoryList.append(templateResponse());
-        this.scrollToBottom();
-
+        $('#is-typing').css('display', 'flex');
         this.$typing = true;
       }
     },
     doneTyping: function() {
       // responses
-      $('.typing').remove();
+      $('#is-typing').css('display', 'none');
       this.$typing = false;
     },
     sendMessage: function() {
@@ -265,10 +259,10 @@ $(function() { //18.177.142.61
         var template = Handlebars.compile( $("#message-template").html());
         var context = { 
           messageOutput: this.messageToSend
-          // name: "Sender"
         };
         
-        this.$chatHistoryList.append(template(context));
+        var new_msg = '<li style="display: flex;justify-content: flex-end;margin-top: 10px;"><div class="message me">' + this.messageToSend + '</div></li>';
+        this.$chatHistoryList.append(new_msg);
         this.scrollToBottom();
         this.$textinput[0].emojioneArea.setText('');
 

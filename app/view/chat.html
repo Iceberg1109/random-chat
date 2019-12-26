@@ -33,7 +33,7 @@
         </a>
         <div class="dropdown-menu">
           <a class="dropdown-item" href="#">
-              Age
+              Preferred Age Range:
               <div class="container mt-3">
                 <div class="row">
                   <div class="col-sm-12">
@@ -51,7 +51,7 @@
               </div>
           </a>
           <a class="dropdown-item mt-3" href="#">
-            Gender
+            I want to chat with a
             <!-- Gender Radio -->
             <div class="ml-3">
               <div class="custom-control custom-radio custom-control-inline mr-3">
@@ -66,24 +66,15 @@
             </div>
           </a>
           <a class="dropdown-item" href="#">
-            <div class="row">
-              <div class="col-sm-12 col-md-6">
-                <div class="md-form mb-0">
+            Preferred Country:
+            <div class="row ml-3">
+              <!-- <div class="col-sm-12 col-md-6"> -->
+                <!-- <div class="md-form mb-0"> -->
                   <!-- <input type="text" id="country" name="country" class="form-control" required> -->
-                  <select id="country" class="form-control" name ="country" required></select>
-                </div>
-              </div>
+                  <select id="country" class="form-control select-ctrl" name ="country" required></select>
+                <!-- </div> -->
+              <!-- </div> -->
               <!--Grid column-->
-      
-              <!--Grid column-->
-              <div class="col-sm-12 col-md-6">
-                  <div class="md-form mb-0">
-                      <!-- <input type="text" id="state" name="state" class="form-control" required> -->
-                      <select name="state" class="form-control" id ="state" required>
-                        <option>Anywhere</option>
-                      </select>
-                  </div>
-              </div>
             </div>
           </a>
           <a class="dropdown-item clearfix">
@@ -129,7 +120,11 @@
               </ul>
             </div>
             
-            <div class="chat-message">
+            <div class="chat-message"> 
+              <div class="ml-4" id="is-typing" style="display: none;">
+                <div style="color: gray;"><span class="font-weight-bold font-italic">AAA</span> is typing</div>
+                <div class="loader typing-loader">Loading...</div>
+              </div>
               <div class="input-container">
                 <input name="msg-txt" class="msg-txt" placeholder ="Type your message" rows="1" />
                 <i class="fas fa-camera img-btn"></i>
@@ -146,33 +141,12 @@
   <!-- Modal -->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <img style="width:100%" src="" >
+      <div class="modal-content" style="width: auto;margin: 0px auto;">
+        <img src="" class="img-fluid">
       </div>
     </div>
   </div>
 
-  <script id="message-template" type="text/x-handlebars-template">
-    <li style="display: flex;justify-content: flex-end;margin-top: 10px;">
-      <div class="message me">
-        {{messageOutput}}
-      </div>
-    </li>   
-  </script>
-
-  <script id="message-response-template" type="text/x-handlebars-template">
-    <li style="display: flex;margin-top: 10px;">
-      <div class="message">
-        {{response}}
-      </div>
-    </li>
-  </script>
-
-  <script id="message-response-typing" type="text/x-handlebars-template">
-    <li class="typing">
-      <div class="loader typing-loader">Loading...</div>
-    </li>
-  </script>
   <!--Section: Contact v.2-->
 <!-- End your project here-->
   <!-- Socket.io -->

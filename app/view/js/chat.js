@@ -84,7 +84,10 @@ $(function() { //18.177.142.61
   $(document).on('change', '#img-file', function (e) {
     console.log("file1", this.files);
     if (this.files && this.files[0]) {
-      console.log("file2", this.files[0]);
+      if (this.files[0].size > 5 * 1024 * 1024) {// Larger than 5 MB
+        swal("Large Image", "Image size should be less than 5MB!", "error")
+        return;
+      }
       var myFile = this.files[0];
       var reader = new FileReader();
       

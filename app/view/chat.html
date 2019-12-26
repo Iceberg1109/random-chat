@@ -20,123 +20,118 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="full-screen" style="background: #8cb4fd;overflow: hidden;">
+<body class="chat-body">
 
   <!-- Start your project here-->  
-  <div class="v-center-parent">
-    <!--Section: Contact v.2-->
-    <div style="max-width: 1200px;width: 100%;">
-      <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand dropdown-toggle" id="filter-dropdown" data-toggle="dropdown">
-          <i class="fas fa-sliders-h" style="font-size: 1.2em;"></i>
+  <header>
+  <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand dropdown-toggle" data-toggle="dropdown">
+        <i class="fas fa-sliders-h" style="font-size: 1.2em;"></i>
+      </a>
+      <div class="dropdown-menu" id="filter-dropdown">
+        <a class="dropdown-item" href="#">
+            Preferred Age Range:
+            <div class="container mt-3">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div id="slider-range"></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <form>
+                    <input type="hidden" name="min-value" value="">
+                    <input type="hidden" name="max-value" value="">
+                  </form>
+                </div>
+              </div>
+            </div>
         </a>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">
-              Preferred Age Range:
-              <div class="container mt-3">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div id="slider-range"></div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <form>
-                      <input type="hidden" name="min-value" value="">
-                      <input type="hidden" name="max-value" value="">
-                    </form>
-                  </div>
-                </div>
-              </div>
-          </a>
-          <a class="dropdown-item mt-3" href="#">
-            I want to chat with a
-            <!-- Gender Radio -->
-            <div class="ml-3">
-              <div class="custom-control custom-radio custom-control-inline mr-3">
-                <input type="radio" class="custom-control-input" id="male" value="male" name="pre-gender" checked>
-                <label class="custom-control-label" for="male">Male</label>
-              </div>
-      
-              <div class="custom-control custom-radio custom-control-inline mr-5">
-                <input type="radio" class="custom-control-input" id="female" value="female" name="pre-gender">
-                <label class="custom-control-label" for="female">Female</label>
-              </div>
+        <a class="dropdown-item mt-3" href="#">
+          I want to chat with a
+          <!-- Gender Radio -->
+          <div class="ml-3">
+            <div class="custom-control custom-radio custom-control-inline mr-3">
+              <input type="radio" class="custom-control-input" id="male" value="male" name="pre-gender" checked>
+              <label class="custom-control-label" for="male">Male</label>
             </div>
-          </a>
-          <a class="dropdown-item" href="#">
-            Preferred Country:
-            <div class="row ml-3">
-              <!-- <div class="col-sm-12 col-md-6"> -->
-                <!-- <div class="md-form mb-0"> -->
-                  <!-- <input type="text" id="country" name="country" class="form-control" required> -->
-                  <select id="country" class="form-control select-ctrl" name ="country" required></select>
-                <!-- </div> -->
-              <!-- </div> -->
-              <!--Grid column-->
+    
+            <div class="custom-control custom-radio custom-control-inline mr-5">
+              <input type="radio" class="custom-control-input" id="female" value="female" name="pre-gender">
+              <label class="custom-control-label" for="female">Female</label>
             </div>
-          </a>
-          <a class="dropdown-item clearfix">
-            <button class="btn btn-primary float-left" id="save">Save</button>
-            <button class="btn btn-light float-right" id="cancel">Cancel</button>
-          </a>
-        </div>
-        <div class="status-msg">Disconnected</div>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-              <a class="nav-link font-weight-bold" href="#" id="nextuser">Next User</a>
-            </li>
-      
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="report-dropdown" data-toggle="dropdown">
-                Report
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Scammer</a>
-                <a class="dropdown-item" href="#">Scammer</a>
-                <a class="dropdown-item" href="#">Scammer</a>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <!-- main Container -->
-      <div class="main-back">
-        <div class="alert-success status-txt"></div>
-        <div class="alert-danger status-txt">
-          We apologize but there is no other chat users matching your search criteria. Please search again or adjust your filter.
-          <br>Click Next User to find a partner.
-        </div>
-        <div class="m-auto" style="width: 100%;">
-          <div class="chat">
-            <div class="chat-history">
-              <ul style="list-style-type: none;" class="pl-0">
-              </ul>
-            </div>
-            
-            <div class="chat-message"> 
-              <div class="ml-4" id="is-typing" style="display: none;">
-                <div style="color: gray;"><span class="font-weight-bold font-italic">AAA</span> is typing</div>
-                <div class="loader typing-loader">Loading...</div>
-              </div>
-              <div class="input-container">
-                <input name="msg-txt" class="msg-txt" placeholder ="Type your message" rows="1" />
-                <i class="fas fa-camera img-btn"></i>
-                <input type="file" id="img-file" style="display:none">
-                <i class="far fa-paper-plane send-btn" disabled=true></i>
-              </div>
-            </div> <!-- end chat-message -->
           </div>
-        </div>
+        </a>
+        <a class="dropdown-item" href="#">
+          Preferred Country:
+          <div class="row ml-3">
+            <!-- <div class="col-sm-12 col-md-6"> -->
+              <!-- <div class="md-form mb-0"> -->
+                <!-- <input type="text" id="country" name="country" class="form-control" required> -->
+                <select id="country" class="form-control select-ctrl" name ="country" required></select>
+              <!-- </div> -->
+            <!-- </div> -->
+            <!--Grid column-->
+          </div>
+        </a>
+        <a class="dropdown-item clearfix">
+          <button class="btn btn-primary float-left" id="save">Save</button>
+          <button class="btn btn-light float-right" id="cancel">Cancel</button>
+        </a>
+      </div>
+      <div class="status-msg">Disconnected</div>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+          <li class="nav-item">
+            <a class="nav-link font-weight-bold" href="#" id="nextuser">Next User</a>
+          </li>
+    
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle font-weight-bold" href="#" id="report-dropdown" data-toggle="dropdown">
+              Report
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Scammer</a>
+              <a class="dropdown-item" href="#">Scammer</a>
+              <a class="dropdown-item" href="#">Scammer</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- main Container -->
+  <main class="main-back" style="flex: auto;display: flex;flex-direction: column;">
+    <div>
+      <div class="alert-success status-txt"></div>
+      <div class="alert-danger status-txt">
+        We apologize but there is no other chat users matching your search criteria. Please search again or adjust your filter.
+        <br>Click Next User to find a partner.
       </div>
     </div>
-  </div>  
+    <div class="chat-history">
+      <ul style="list-style-type: none;" class="pl-0">
+      </ul>
+    </div>
+  </main>
+
+  <footer class="chat-message main-back"> 
+    <div class="ml-4" id="is-typing" style="display: none;">
+      <div style="color: gray;"><span class="font-weight-bold font-italic">AAA</span> is typing</div>
+      <div class="loader typing-loader">Loading...</div>
+    </div>
+    <div class="input-container">
+      <input name="msg-txt" class="msg-txt" placeholder ="Type your message" rows="1" />
+      <i class="fas fa-camera img-btn"></i>
+      <input type="file" id="img-file" style="display:none">
+      <i class="far fa-paper-plane send-btn" disabled=true></i>
+    </div>
+  </footer> 
   <div class="loader connecting-loader">Loading...</div>
   <!-- Modal -->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

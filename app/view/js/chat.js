@@ -1,7 +1,7 @@
 populateCountries("country", "state" ,"Anywhere", "Anywhere");
 // Cancel filter button
 $(document).on('click', '#cancel', function (e) {
-  $("#filter .dropdown-menu").removeClass('show');
+  $("#filter-dropdown").removeClass('show');
 });
 
 // Disable auto close of dropdown menu when click inside the menu
@@ -47,7 +47,7 @@ $(function() { //18.177.142.61
   });
   // Change the filter
   $(document).on('click', '#save', function (e) {
-    $("#filter .dropdown-menu").removeClass('show');
+    $("#filter-dropdown").removeClass('show');
     // Show loading spinner, hide main section
     // $(".connecting-loader").css({'display':'block'});
     // $('section').css({'filter': 'blur(58px)', '-webkit-filter': 'blur(58px)'});
@@ -131,7 +131,7 @@ $(function() { //18.177.142.61
   // On paired
   socket.on("ON_PAIRED", (data) => {
       console.log("ON_PAIRED", data);
-      $('#report-dropdown').css('color', '#1dc4e9');
+      $('#report-dropdown').css('color', '#f51212');
       $('#report-dropdown').css('pointer-events', 'auto');
 
       $('.send-btn').attr('disabled', false);
@@ -256,10 +256,10 @@ $(function() { //18.177.142.61
       
       this.messageToSend = this.$textinput[0].emojioneArea.getText();
       if (this.messageToSend.trim() !== '') {
-        var template = Handlebars.compile( $("#message-template").html());
-        var context = { 
-          messageOutput: this.messageToSend
-        };
+        // var template = Handlebars.compile( $("#message-template").html());
+        // var context = { 
+        //   messageOutput: this.messageToSend
+        // };
         
         var new_msg = '<li style="display: flex;justify-content: flex-end;margin-top: 10px;"><div class="message me">' + this.messageToSend + '</div></li>';
         this.$chatHistoryList.append(new_msg);

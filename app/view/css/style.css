@@ -152,15 +152,14 @@
     max-width: 80%;
     position: relative;
     border-radius: 1rem 1rem 1rem 0rem;
-    display: flex;
+    /* display: flex; */
     word-break: break-all;
   }
   
   .chat-history .me {
-    justify-content: flex-end;
+    /* justify-content: flex-end; */
     background: #86BB71;
     color: white;
-    border-radius: 1rem 1rem 0rem 1rem;
     background: #007bff;
     -webkit-transition: all .3s;
     -moz-transition: all .3s;
@@ -170,6 +169,7 @@
   }
   .chat-history .message img {
     max-width: 150px;
+    height: auto;
     padding: .5rem;
     border-radius: .5rem;
     background-color: #dee2e6;

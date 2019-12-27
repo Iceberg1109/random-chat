@@ -11,6 +11,7 @@ $(document).on('click', '.dropdown-menu', function (e) {
 
 $(function() { //18.177.142.61
   let socket = io.connect('http://18.177.142.61:8000', {
+  // let socket = io.connect('http://localhost:8000', {
     query : {
       user_type:"guest"
     }
@@ -193,6 +194,13 @@ $(function() { //18.177.142.61
     $('.alert-success').css('display', 'none');
     $('.status-msg').text('Disconnected');
 
+    $('#report-dropdown').css('color', '#ccc');
+    $('#report-dropdown').css('pointer-events', 'none');
+
+    $('.send-btn').attr('disabled', true);
+    $('.send-btn').css('color', '#ccc');
+    $('.send-btn').css('pointer-events', 'none');
+    
     $('.chat-history ul').html('');
   });
   

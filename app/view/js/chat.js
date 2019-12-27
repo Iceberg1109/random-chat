@@ -10,8 +10,8 @@ $(document).on('click', '.dropdown-menu', function (e) {
 });
 
 $(function() { //18.177.142.61
-  let socket = io.connect('http://18.177.142.61:8000', {
-  // let socket = io.connect('http://localhost:8000', {
+  // let socket = io.connect('http://18.177.142.61:8000', {
+  let socket = io.connect('http://localhost:8000', {
     query : {
       user_type:"guest"
     }
@@ -163,7 +163,7 @@ $(function() { //18.177.142.61
       $('.send-btn').css('pointer-events', 'none');
       $('.chat-history ul').html('');
       
-      $('.alert-danger').html("We apologize but there is no other chat users matching your search criteria. Please search again or adjust your filter.<br>Click Next User to find a partner.");
+      $('.alert-danger').html("We apologize but there are no other chat users matching your search criteria. Please search again or adjust your filter.<br>Click Next User to find a partner.");
       $('.alert-danger').css('display', 'block');
       $('.alert-success').css('display', 'none');
       $('.status-msg').text('Disconnected');
@@ -202,6 +202,7 @@ $(function() { //18.177.142.61
     $('.send-btn').css('pointer-events', 'none');
     
     $('.chat-history ul').html('');
+    chat.doneTyping();
   });
   
   var chat = {

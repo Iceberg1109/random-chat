@@ -10,8 +10,8 @@ $(document).on('click', '.dropdown-menu', function (e) {
 });
 
 $(function() { //18.177.142.61
-  // let socket = io.connect('http://18.177.142.61:8000', {
-  let socket = io.connect('http://localhost:8000', {
+  let socket = io.connect('http://18.177.142.61:8000', {
+  // let socket = io.connect('http://localhost:8000', {
     query : {
       user_type:"guest"
     }
@@ -295,7 +295,6 @@ $(function() { //18.177.142.61
       $("#img-file").click();
     },
     scrollToBottom: function() {
-      // this.$chatHistory.scrollTop(this.$chatHistory[0].scrollHeight + 500);
       this.$chatHistory.animate({
         scrollTop: this.$chatHistory[0].scrollHeight + 500,
       }, 200);

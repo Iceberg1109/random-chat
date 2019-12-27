@@ -43,7 +43,7 @@
                 <div class="col-sm-12">
                     <div class="md-form mb-0">
                       <input type="text" id="username" name="name" class="form-control" required>
-                      <label for="name" class="">Your name</label>
+                      <label for="name" class="">Username</label>
                     </div>
                 </div>
 
@@ -53,6 +53,7 @@
                       <!-- <input type="number" id="age" name="age" class="form-control" min=13 max=99 required>
                       <label for="age" class="">Your Age</label> -->
                       <select class="form-control select-ctrl" name ="age" id="age" required>
+                        <option>Age</option>
                         <option>13</option><option>14</option><option>15</option><option>16</option>
                         <option>17</option><option>18</option><option>19</option><option>20</option>
                         <option>21</option><option>22</option><option>23</option><option>24</option>
@@ -176,6 +177,11 @@
         e.preventDefault();
         e.stopPropagation();
         console.log('aaa');
+        jQuery.validator.addMethod("checkAge", function(value, element) {
+          if ($(element)[0].selectedIndex == 0)
+            return false;
+          return true;
+        }, "* Please select the age");
         jQuery.validator.addMethod("checkCountry", function(value, element) {
           if ($(element)[0].selectedIndex == 0)
             return false;
@@ -189,6 +195,7 @@
 
         $("#contact-form").validate({
           rules: {
+            age: {checkAge: true},
             country: {checkCountry: true},
             state: { checkState: true},
           },

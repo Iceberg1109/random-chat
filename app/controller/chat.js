@@ -134,6 +134,7 @@ module.exports = {
                 ind ++;
             }
             pairs.splice(ind, 1);
+            console.log("LEFT");
             cur_pair.emit("LEFT_CHAT");
             cur_id = cur_pair.id;
         }

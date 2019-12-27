@@ -17,14 +17,12 @@ app.set('view engine', 'html');
 app.get("/",(req,res) => {
     // console.log("asdfds",req);
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log(req.headers['x-forwarded-for']);
-    console.log(req.connection.remoteAddress);
+    console.log(ip);
     var geo = geoip.lookup(ip);
     var country = geo ? geo.country : "Unknown";
 
     console.log(country);
     res.render(path + "join.html", {country :country});
-    
 });
 app.get("/chat",(req,res) =>{
     res.render(path + "chat.html");

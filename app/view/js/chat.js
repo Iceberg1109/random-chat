@@ -162,6 +162,7 @@ $(function() { //18.177.142.61
       $('.send-btn').css('pointer-events', 'none');
       $('.chat-history ul').html('');
       
+      $('.alert-danger').html("We apologize but there is no other chat users matching your search criteria. Please search again or adjust your filter.<br>Click Next User to find a partner.");
       $('.alert-danger').css('display', 'block');
       $('.alert-success').css('display', 'none');
       $('.status-msg').text('Disconnected');
@@ -187,6 +188,7 @@ $(function() { //18.177.142.61
   // On Left Chat
   socket.on("LEFT_CHAT", (data) => {
     console.log("Left Chat");
+    $('.alert-danger').html("Your partner left the chat.<br>Click Next User to find a partner.");
     $('.alert-danger').css('display', 'block');
     $('.alert-success').css('display', 'none');
     $('.status-msg').text('Disconnected');

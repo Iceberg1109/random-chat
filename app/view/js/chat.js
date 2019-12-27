@@ -10,8 +10,8 @@ $(document).on('click', '.dropdown-menu', function (e) {
 });
 
 $(function() { //18.177.142.61
-  let socket = io.connect('http://18.177.142.61:8000', {
-  // let socket = io.connect('http://localhost:8000', {
+  // let socket = io.connect('http://18.177.142.61:8000', {
+  let socket = io.connect('http://localhost:8000', {
     query : {
       user_type:"guest"
     }
@@ -189,7 +189,7 @@ $(function() { //18.177.142.61
   // On Left Chat
   socket.on("LEFT_CHAT", (data) => {
     console.log("Left Chat");
-    $('.alert-danger').html("Your partner left the chat.<br>Click Next User to find a partner.");
+    $('.alert-danger').html("Your partner has left the chat.<br>Click Next User to find a new partner.");
     $('.alert-danger').css('display', 'block');
     $('.alert-success').css('display', 'none');
     $('.status-msg').text('Disconnected');

@@ -260,7 +260,7 @@ module.exports = {
         break;
       }
       else {
-        ip = element.s.request.connection.remoteAddress;
+        ip = element.f.request.connection.remoteAddress;
         break;
       }    
     }

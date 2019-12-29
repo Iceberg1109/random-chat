@@ -1,3 +1,9 @@
+if (sessionStorage.user_data == undefined) {
+  location.href = "/";
+}
+
+var user_data = JSON.parse(sessionStorage.user_data);
+
 populateCountries("country", "state" ,"Anywhere", "Anywhere");
 // Cancel filter button
 $(document).on('click', '#cancel', function (e) {
@@ -16,7 +22,7 @@ $(function() { //18.177.142.61
       user_type:"guest"
     }
   });
-  let user_data = JSON.parse(sessionStorage.user_data);
+  
   var bTyping = false;
   $(document).ready(function() {
     // Show loading spinner, hide main section

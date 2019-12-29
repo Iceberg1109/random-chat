@@ -283,7 +283,7 @@ module.exports = {
           });
         }
         else {
-          var sql = "INSERT INTO users (ip, reports, status) VALUES ('" + ipv4 +"', '["+ JSON.stringify(data.detail) +"]', 'no')";
+          var sql = "INSERT INTO users (ip, reports, isblocked) VALUES ('" + ipv4 +"', '["+ JSON.stringify(data.detail) +"]', 'no')";
           con.query(sql, function (err, result) {
             if (err) throw err;
             console.log("1 record inserted");

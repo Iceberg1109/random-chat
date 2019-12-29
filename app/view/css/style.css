@@ -333,3 +333,20 @@
       box-shadow: 0 2.5em 0 0;
     }
   }
+/* Admin page */
+  .ip-table-container {
+    max-width: 800px;
+    width: 100%;
+    margin: auto;
+  }
+
+  .ip-table-container th,
+  .ip-table-container td {
+    text-align: center;
+  }
+
+  .ip-table-container td {
+    vertical-align: middle;
+    font-weight: bold;
+    padding: 0px!important;
+  }

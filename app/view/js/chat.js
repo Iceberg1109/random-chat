@@ -10,8 +10,8 @@ $(document).on('click', '.dropdown-menu', function (e) {
 });
 
 $(function() { //18.177.142.61
-  let socket = io.connect('http://18.177.142.61:8000', {
-  // let socket = io.connect('http://localhost:8000', {
+  // let socket = io.connect('http://18.177.142.61:8000', {
+  let socket = io.connect('http://localhost:8000', {
     query : {
       user_type:"guest"
     }
@@ -120,15 +120,16 @@ $(function() { //18.177.142.61
     $('#myModal img').attr('src', $img);
     $('#myModal').modal('toggle');
   });
+  $(document).on('click', '.scammer', function(e){
+    $("#right-menu .dropdown-menu").removeClass('show');
+    socket.emit("REPORT_USER", {detail: $(this).text()});
+  });
   socket.on("CONNECTION_ACCEPTED", () => {
     console.log("connected to server");
     // Send socket connection request,
     socket.emit('ON_CONFIRM_NAME', user_data);
   });
   socket.on("USER_CONFIRMED", (data) => {
-    // Hide loading spinner, remove main section blur
-    // $(".connecting-loader").css({'display':'none'});
-    // $('section').css({'filter': '', '-webkit-filter': ''});
     console.log("user confirmed", data);
     socket.emit('ON_FIND_PAIR');
   });

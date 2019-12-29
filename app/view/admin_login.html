@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" class="full-screen">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, shrink-to-fit=no, maximum-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Admin Login - Chat</title>
+  <!-- MDB icon -->
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Slider Style -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/css/tooltipster.min.css">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  
+</head>
+<body class="full-screen">
+
+<!-- Start your project here-->  
+<div class="v-center-parent">
+  <div class="px-2" style="max-width: 640px;width: 100%;">
+    <div id="login">
+
+      <!--Section heading-->
+      <h2 class="h2-responsive font-weight-bold text-center">Sign In Admin</h2>
+      
+      <div class="row panel">
+
+        <!-- Login Form -->
+        <div class="col-md-12 mb-md-0 mb-5">
+          <form id="contact-form" action="/admin" method="POST">
+
+            <!-- User Name and Age -->
+            <div class="row">
+
+                <!-- User Name -->
+                <div class="col-sm-12">
+                    <div class="md-form mb-0">
+                      <input type="text" id="email" name="email" class="form-control" required>
+                      <label for="name" class="">Username</label>
+                    </div>
+                </div>
+
+                <!-- User Password -->
+                <div class="col-sm-12">
+                  <div class="md-form mb-0">
+                    <input type="password" id="password" name="password" class="form-control" required>
+                    <label for="name" class="">Password</label>
+                  </div>
+              </div>
+            </div>
+           
+          </form>
+
+          <div class="text-center mt-5" style="width: 100%;">
+            <button type="submit" id="btn_join" class="btn btn-primary m-auto font-weight-bold">Sign In</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!--Section: Contact v.2-->
+<!-- End your project here-->
+  <!-- Socket.io -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+  <!-- jQuery -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Countries List -->
+  <script type= "text/javascript" src = "js/countries.js"></script>
+  <script type= "text/javascript" src = "js/code2name.js"></script>
+  <!-- Your custom scripts (optional) -->
+  <script type= "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+  <script type= "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/js/jquery.tooltipster.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+  <script>
+    var country_code = "{{ country }}";
+  </script>
+  <script>
+    
+    $(function() {
+      $('#contact-form input[type="text"]').tooltipster({ 
+        trigger: 'custom', // default is 'hover' which is no good here
+        onlyOne: false,    // allow multiple tips to be open at a time
+        position: 'bottom'  // display the tips to the right of the element
+      });
+      $('#contact-form input[type="password"]').tooltipster({ 
+        trigger: 'custom', // default is 'hover' which is no good here
+        onlyOne: false,    // allow multiple tips to be open at a time
+        position: 'bottom'  // display the tips to the right of the element
+      });
+      
+      // Confirm Username
+      $(document).on('click', '#btn_join', function(e){
+        e.preventDefault();
+        $("#contact-form").submit();  
+      });
+
+      $("#contact-form").submit(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        $("#contact-form").validate({
+          errorPlacement: function (error, element) {
+            $(element).tooltipster('update', $(error).text());
+            $(element).tooltipster('show');
+          },
+          success: function (label, element) {
+            $(element).tooltipster('hide');
+          }
+        });
+
+        if ($("#contact-form").valid()) {
+          var name = $('#email').val();
+          var password = $('#password').val();
+          
+          console.log(name, password);
+          $.post('/admin', {name: name, password: password}, function(data, status) {
+            if (data == "fail") {
+              swal("Ooops...", "The username or password is wrong!", "error");
+            }
+            else {
+              localStorage.setItem('bLoggedin', true);
+              location.href = "/ip_table";
+            }
+          });
+        }
+      })
+  });
+  </script>
+</body>
+</html>

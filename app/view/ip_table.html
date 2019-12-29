@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" class="full-screen">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, shrink-to-fit=no, maximum-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Admin - Chat</title>
+  <!-- MDB icon -->
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Slider Style -->
+  <link rel="stylesheet" href="css/slider.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/css/tooltipster.min.css">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    if(!localStorage.getItem('bLoggedin')) {
+      location.href = "/admin";
+    }
+  </script>
+</head>
+<body class="full-screen">
+  <div class="px-2 ip-table-container" style="box-shadow: 4px 4px 5px #ccc;">
+    <table class="table table-hover mt-5">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">IP Address</th>
+          <th scope="col">Reported Count</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="report_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Reports Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Section: Contact v.2-->
+<!-- End your project here-->
+  <!-- Socket.io -->
+  <!-- jQuery -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Countries List -->
+  <!-- Your custom scripts (optional) -->
+  <script type= "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/js/jquery.tooltipster.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+  <script>
+    var users = [];
+    $(document).ready(function() {
+      $.post('/ip_table', function(data, status) {
+        users = data;
+        for (i = 0; i < data.length; i ++) {
+          var reports_cnt = JSON.parse(data[i].reports);
+          if (data[i].isblocked == 'no') {
+            $('tbody').append('<tr><td>' + (i + 1).toString() + '</td><td>' + data[i].ip + 
+                      '</td><td>'+ reports_cnt.length +'</td><td><button class="btn btn-primary" data-id="'
+                       + i + '">View</button></td><td><button class="btn btn-danger" data-id="'
+                       + data[i].Id + '">Block</button></td></tr>');
+          }
+          else {
+            $('tbody').append('<tr><td>' + (i + 1).toString() + '</td><td>' + data[i].ip + 
+                      '</td><td>'+ reports_cnt.length +'</td><td><button class="btn btn-primary" data-id="'
+                       + i + '">View</button></td><td><button class="btn btn-success" data-id="'
+                       + data[i].Id + '">Unblock</button></td></tr>');
+          }
+        }
+      });
+    });
+    $(document).on('click', '.btn-primary', function(){
+      var __self = $(this);
+      var id = __self.data('id');
+      var reports = JSON.parse(users[id].reports);
+      var html = "";
+      for (var i = 0; i < reports.length; i ++) {
+        html += reports[i] + "<br>";
+      }
+      $('.modal-body').html(html);
+      $("#report_modal").modal('show');
+    });
+    $(document).on('click', '.btn-danger', function(){
+      var __self = $(this);
+      var id = __self.data('id');
+      $.post('/block', {id: id}, function(data, status) {
+        if (data == "success") {
+          swal("Success", "The IP address is blocked now!", "success");
+          __self.removeClass('btn-danger');
+          __self.addClass('btn-success');
+          __self.text('Unblock');
+        }
+        else {
+          swal("Oops...", "Something went wrong!", "error");
+        }
+      });
+    });
+    $(document).on('click', '.btn-success', function(){
+      var __self = $(this);
+      var id = __self.data('id');
+      $.post('/unblock', {id: id}, function(data, status) {
+        if (data == "success") {
+          swal("Success", "The IP address is unblocked now!", "success");
+          __self.removeClass('btn-success');
+          __self.addClass('btn-danger');
+          __self.text('Block');
+        }
+        else {
+          swal("Oops...", "Something went wrong!", "error");
+        }
+      });
+    });
+  </script>    
+</body>
+</html>

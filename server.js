@@ -38,12 +38,15 @@ app.set('view engine', 'html');
 app.get("/",(req,res) => {
   var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   console.log(ip);
+  var temp = ip.split(':');
+  var ipv4 = temp[temp.length - 1];
 
-  var query = "SELECT * FROM users WHERE isblocked = 'yes' ip='" + ip + "'";
+  var query = "SELECT * FROM users WHERE isblocked = 'yes' and ip='" + ipv4 + "'";
   console.log(query);
   con.query(query, function (err, result, fields) {
     if (err) throw err;
-    if (result.length != 0) {
+    console.log(result.length);
+    if (result.length == 0) {
       var geo = geoip.lookup(ip);
       var country = geo ? geo.country : "Unknown";
 
